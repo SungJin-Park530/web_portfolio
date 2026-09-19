@@ -1,23 +1,42 @@
-// 스크롤 위치에 따른 플로팅 내비게이션 활성화
 document.addEventListener('DOMContentLoaded', () => {
-  const sections = document.querySelectorAll('section, .hero');
-  const navDots = document.querySelectorAll('.floating-nav a');
+  document.querySelectorAll('a[href="#projects"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      document.querySelector('#projects').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
 
-  window.addEventListener('scroll', () => {
-    let current = '';
+  const modal = document.querySelector('#project-modal');
+  const closeButton = modal.querySelector('.modal-close');
 
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      if (window.scrollY >= sectionTop - 150) {
-        current = section.getAttribute('id') || 'hero';
+  const closeModal = () => {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  };
+
+  document.querySelectorAll('.project-card').forEach((card) => {
+    const openCard = () => {
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      closeButton.focus();
+    };
+
+    card.addEventListener('click', (event) => {
+      if (!event.target.closest('a')) openCard();
+    });
+    card.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openCard();
       }
     });
+  });
 
-    navDots.forEach(dot => {
-      dot.classList.remove('active');
-      if (dot.getAttribute('href').includes(current)) {
-        dot.classList.add('active');
-      }
-    });
+  closeButton.addEventListener('click', closeModal);
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !modal.hidden) closeModal();
   });
 });

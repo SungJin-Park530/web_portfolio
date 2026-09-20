@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const list = (value) => Array.isArray(value) ? value : [];
 
+  const normalizeAssetPath = (value) => String(value ?? '').replace(/(?:\.\.\/)+assets\//g, './assets/');
+
   const showEmptyState = () => {
     projectList.innerHTML = '<p class="project-list-status">등록된 프로젝트가 없습니다.</p>';
   };
@@ -31,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const frontmatter = window.jsyaml.load(match[1]) || {};
     return {
       ...frontmatter,
+      thumbnail: normalizeAssetPath(frontmatter.thumbnail),
       sourcePath: path,
       body: match[2].trim()
     };
@@ -65,7 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
     modalCategory.textContent = project.role || project.category || 'PROJECT';
     modalRole.textContent = project.role || '-';
     modalDuration.textContent = project.period || '-';
-    modalContent.innerHTML = window.marked.parse(project.body || '');
+    const markdownBody = normalizeAssetPath(project.body || '');
+    modalContent.innerHTML = window.marked.parse(markdownBody);
+    renderMermaidDiagrams().catch((error) => console.error('Unable to render Mermaid diagram:', error));
     modalTechStack.innerHTML = techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('');
     modalTags.innerHTML = tags.map((item) => `<span>${escapeHtml(item)}</span>`).join('');
     modalLinks[0].href = project.videoUrl || '#';
@@ -78,6 +83,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeModal = () => {
     modal.hidden = true;
     document.body.style.overflow = '';
+  };
+
+  const renderMermaidDiagrams = async () => {
+    const mermaidBlocks = [...modalContent.querySelectorAll('pre code.language-mermaid')];
+    mermaidBlocks.forEach((codeBlock) => {
+      const diagram = document.createElement('div');
+      diagram.className = 'mermaid';
+      diagram.textContent = codeBlock.textContent.trim();
+      codeBlock.parentElement.replaceWith(diagram);
+    });
+
+    const diagrams = modalContent.querySelectorAll('.mermaid');
+    if (diagrams.length > 0 && window.mermaid) {
+      await window.mermaid.run({ nodes: diagrams });
+    }
   };
 
   const bindCardEvents = (projects) => {

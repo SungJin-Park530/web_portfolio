@@ -1,9 +1,9 @@
 ---
 title: "IoT Occupancy Prediction"
-category: "AI"
+category: "개인 프로젝트"
 role: "ML ENGINEER · DATA ANALYST"
 period: "2026.08.20 - 2026.08.26"
-thumbnail: "YOUR_THUMBNAIL_IMAGE_PATH" # <!-- 카드 썸네일 이미지 경로 입력 (예: ./assets/images/iot-thumb.png) -->
+thumbnail: "../../asset/images/mlprj/ml-thumbnail.png"
 videoUrl: "https://www.youtube.com/watch?v=MS3Gb3q3yms"
 demoUrl: "https://iotmodel.streamlit.app/"
 githubUrl: "https://github.com/SungJin-Park530/MLPRJ"
@@ -24,7 +24,7 @@ order: 1
 ---
 
 ## 📌 개요 (Overview)
-- **형태**: 머신러닝 엔드투엔드 개인 프로젝트
+- **형태**: 머신러닝 개인 프로젝트
 - **서비스 링크**: [Streamlit Live Demo](https://iotmodel.streamlit.app/)
 - **배경**: 실내 공간의 재실 상태를 수동으로 관리할 경우 발생하는 불필요한 냉난방, 조명, 환기 에너지 낭비를 줄이고자 기획했습니다. 카메라 기반 영상 센서 대신 사생활 침해 우려가 없는 환경 센서(온도, 조도, CO2, 소리, PIR 모션 등)를 통합하여 공간 재실 여부를 정밀하게 추정합니다.
 

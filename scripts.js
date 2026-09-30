@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalRole = document.querySelector('#modal-role');
   const modalDuration = document.querySelector('#modal-duration');
   const modalContent = document.querySelector('#modal-content');
+  const modalVideo = modal.querySelector('.modal-video');
   const modalTechStack = document.querySelector('#modal-tech-stack');
   const modalTags = document.querySelector('#modal-tags');
   const modalLinks = modal.querySelectorAll('.modal-actions a');
@@ -21,6 +22,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const list = (value) => Array.isArray(value) ? value : [];
 
   const normalizeAssetPath = (value) => String(value ?? '').replace(/(?:\.\.\/)+assets\//g, './assets/');
+
+  const getYouTubeVideoId = (value) => {
+    try {
+      const url = new URL(value);
+      const host = url.hostname.replace(/^www\./, '');
+      if (host === 'youtu.be') return url.pathname.slice(1).split('/')[0];
+      if (!['youtube.com', 'm.youtube.com', 'youtube-nocookie.com'].includes(host)) return '';
+      if (url.pathname === '/watch') return url.searchParams.get('v') || '';
+      return url.pathname.match(/^\/(?:embed|shorts|live)\/([^/]+)/)?.[1] || '';
+    } catch {
+      return '';
+    }
+  };
+
+  const renderYouTubePlayer = (container, videoUrl, title) => {
+    const videoId = getYouTubeVideoId(videoUrl);
+    if (!/^[\w-]{11}$/.test(videoId)) return;
+
+    const frame = document.createElement('iframe');
+    const origin = encodeURIComponent(window.location.origin);
+    frame.className = 'youtube-player';
+    frame.title = title;
+    frame.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&origin=${origin}`;
+    frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    frame.allowFullscreen = true;
+    frame.loading = 'lazy';
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+    container.classList.add('has-video');
+    container.replaceChildren(frame);
+  };
+
+  const pauseCardVideos = () => {
+    projectList.querySelectorAll('.youtube-player').forEach((frame) => {
+      frame.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }),
+        'https://www.youtube.com'
+      );
+    });
+  };
 
   const showEmptyState = () => {
     projectList.innerHTML = '<p class="project-list-status">등록된 프로젝트가 없습니다.</p>';
@@ -62,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const openModal = (project) => {
+    pauseCardVideos();
     const tags = list(project.tags);
     const techStack = list(project.techStack);
     modalTitle.textContent = project.title || 'Project Details';
@@ -73,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMermaidDiagrams().catch((error) => console.error('Unable to render Mermaid diagram:', error));
     modalTechStack.innerHTML = techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('');
     modalTags.innerHTML = tags.map((item) => `<span>${escapeHtml(item)}</span>`).join('');
+    renderYouTubePlayer(modalVideo, project.videoUrl, `${project.title || 'Project'} video`);
     modalLinks[0].href = project.videoUrl || '#';
     modalLinks[1].href = project.githubUrl || 'https://github.com';
     modal.hidden = false;
@@ -82,6 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const closeModal = () => {
     modal.hidden = true;
+    modalVideo.replaceChildren();
+    modalVideo.classList.remove('has-video');
     document.body.style.overflow = '';
   };
 
@@ -142,6 +186,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       projectList.innerHTML = projects.map(renderCard).join('');
+      projectList.querySelectorAll('.dynamic-media-placeholder').forEach((container, index) => {
+        renderYouTubePlayer(container, projects[index].videoUrl, `${projects[index].title || 'Project'} video`);
+      });
       bindCardEvents(projects);
     } catch (error) {
       console.error('Unable to load projects:', error);

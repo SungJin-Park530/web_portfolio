@@ -146,6 +146,7 @@ footer small { margin-top: 5px; font-size: 12px; }
 
 .modal-actions a { padding: 7px 9px; border-radius: 3px; font-size: 12px; text-decoration: none; }
 .modal-actions a:focus-visible, .modal-close:focus-visible { outline: 2px solid #f5b942; outline-offset: 2px; }
+.category-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 
 @media (max-width: 680px) {
   .modal-actions a { padding: 5px 6px; font-size: 7px; }

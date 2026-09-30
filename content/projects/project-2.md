@@ -1,10 +1,12 @@
 ---
 title: "Lumen Intelligence Hub"
-category: "AI"
+category: ["AI", "AI ENGINEER · LLM PLATFORM"]
 role: "AI ENGINEER · LLM PLATFORM"
 period: "2025.10 - 2026.02"
 thumbnail: "../../assets/images/sample2.png"
-videoUrl: "https://www.youtube.com/watch?v=VIDEO_PLACEHOLDER_2"
+videoUrl: ""
+demoUrl: ""
+githubUrl: ""
 summary: "An LLM-powered knowledge workspace that classifies documents and generates grounded answers."
 highlights:
   - "Cut retrieval latency by 58% with hybrid vector and keyword search."

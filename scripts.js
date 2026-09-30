@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeButton = modal.querySelector('.modal-close');
   const modalTitle = document.querySelector('#modal-title');
   const modalCategory = document.querySelector('#modal-category');
-  const modalRole = document.querySelector('#modal-role');
   const modalDuration = document.querySelector('#modal-duration');
   const modalContent = document.querySelector('#modal-content');
   const modalVideo = modal.querySelector('.modal-video');
@@ -20,6 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     .replaceAll("'", '&#039;');
 
   const list = (value) => Array.isArray(value) ? value : [];
+
+  const categories = (value) => (Array.isArray(value) ? value : [value])
+    .filter((item) => typeof item === 'string' && item.trim());
+
+  const renderCategories = (value) => categories(value)
+    .map((item) => `<span class="category">${escapeHtml(item)}</span>`)
+    .join('');
 
   const normalizeAssetPath = (value) => String(value ?? '').replace(/(?:\.\.\/)+assets\//g, './assets/');
 
@@ -82,20 +88,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const renderCard = (project, index) => {
     const highlights = list(project.highlights);
     const techStack = list(project.techStack);
-    const category = project.category === 'AI' ? 'AI ENGINEER' : 'FULL-STACK';
+    const showRole = categories(project.category).includes('팀 프로젝트') && project.role;
+    const roleMarkup = showRole ? `<h4>ROLE</h4><p class="project-role">${escapeHtml(project.role)}</p>` : '';
 
     return `
       <article class="project-card" tabindex="0" role="button" aria-label="Open ${escapeHtml(project.title)} project details" data-project-index="${index}">
-        <div class="project-topline"><span class="category">${category}</span><span class="date">${escapeHtml(project.period)} · ${escapeHtml(project.role)}</span></div>
+        <div class="project-topline"><div class="category-list">${renderCategories(project.category)}</div><span class="date">${escapeHtml(project.period)}</span></div>
         <h3>${escapeHtml(project.title)}</h3>
         <div class="project-body">
           <div class="video-placeholder dynamic-media-placeholder" aria-label="YouTube video placeholder"><span>→</span></div>
           <div class="project-info">
+            <h4>SUMMARY</h4>
             <p>${escapeHtml(project.summary)}</p>
+            ${roleMarkup}
             <h4>KEY HIGHLIGHTS</h4>
             <ul>${highlights.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
             <div class="tech-tags">${techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}</div>
-            <div class="card-actions"><a class="live-button" href="#">Live Demo ↗</a><a class="github-button" href="https://github.com" target="_blank" rel="noreferrer">◈ GitHub</a></div>
+            <div class="card-actions"><a class="live-button" href="${escapeHtml(project.demoUrl || '#')}">Live Demo ↗</a><a class="github-button" href="${escapeHtml(project.githubUrl || '#')}" target="_blank" rel="noreferrer">◈ GitHub</a></div>
           </div>
         </div>
       </article>`;
@@ -106,8 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tags = list(project.tags);
     const techStack = list(project.techStack);
     modalTitle.textContent = project.title || 'Project Details';
-    modalCategory.textContent = project.role || project.category || 'PROJECT';
-    modalRole.textContent = project.role || '-';
+    modalCategory.innerHTML = renderCategories(project.category) || '<span class="category">PROJECT</span>';
     modalDuration.textContent = project.period || '-';
     const markdownBody = normalizeAssetPath(project.body || '');
     modalContent.innerHTML = window.marked.parse(markdownBody);

@@ -1,7 +1,7 @@
 ---
 title: "IoT Occupancy Prediction"
-category: "개인 프로젝트"
-role: "ML ENGINEER · DATA ANALYST"
+category: ["머신러닝", "개인 프로젝트"]
+role: ""
 period: "2026.08.20 - 2026.08.26"
 thumbnail: "../../asset/images/mlprj/ml-thumbnail.png"
 videoUrl: "https://www.youtube.com/watch?v=MS3Gb3q3yms"

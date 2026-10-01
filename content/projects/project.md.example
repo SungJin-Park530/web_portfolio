@@ -3,7 +3,6 @@ title: "프로젝트명"
 category: ["분야", "개인 프로젝트"]
 role: ""
 period: "YYYY.MM - YYYY.MM"
-thumbnail: "../../assets/images/프로젝트폴더/thumbnail.png"
 videoUrl: ""
 demoUrl: ""
 githubUrl: ""
@@ -16,7 +15,6 @@ techStack:
   - "기술 1"
   - "기술 2"
 tags: ["featured", "분류"]
-order: 99
 ---
 
 ## 개요

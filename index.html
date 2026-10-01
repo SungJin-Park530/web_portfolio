@@ -4,37 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Chen | Full-Stack & AI</title>
+    <title>박성진 | AI & 풀스택 개발자</title>
+    <script>
+        (() => {
+            try {
+                const savedTheme = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.dataset.theme = savedTheme === 'dark' || savedTheme === 'light'
+                    ? savedTheme
+                    : (prefersDark ? 'dark' : 'light');
+            } catch {
+                document.documentElement.dataset.theme = 'light';
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header class="site-header">
-        <a class="brand" href="#hero">ALEX CHEN <span>· FULL-STACK &amp; AI</span></a>
+        <a class="brand" href="#hero">박성진 <span>· AI &amp; 풀스택 개발자</span></a>
         <nav class="top-nav" aria-label="Main navigation">
             <a href="#about">About</a>
             <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
-            <a class="github-mark" href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub">↗</a>
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="true" title="Switch to light mode">
+                <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
+                <span class="theme-icon theme-icon-moon" aria-hidden="true">☾</span>
+            </button>
         </nav>
     </header>
 
     <main>
         <section id="hero" class="hero" aria-labelledby="hero-title">
-            <div class="availability"><span></span> Available for new opportunities</div>
-            <h1 id="hero-title">Building Resilient Systems &amp;<br>Intelligent AI Solutions</h1>
-            <p class="role">Full-Stack &amp; AI Developer</p>
-            <p class="intro">Bridging robust distributed backend architectures with modern LLM &amp; generative AI<br class="desktop-only"> technologies. Crafting scalable cloud native systems engineered for ultra-low latency<br class="desktop-only"> and maximum intelligence.</p>
+            <div class="availability"><span></span> 새로운 기회를 찾고 있습니다</div>
+            <h1 id="hero-title">회복탄력성 있는 시스템과<br>지능형 AI 솔루션을 만듭니다</h1>
+            <p class="role">풀스택 &amp; AI 개발자</p>
+            <p class="intro">견고한 분산형 백엔드 아키텍처와 최신 LLM 및 생성형 AI를 연결합니다.<br class="desktop-only">확장 가능한 클라우드 네이티브 시스템을 설계해<br class="desktop-only">낮은 지연 시간과 높은 지능을 구현합니다.</p>
             <div class="hero-actions">
-                <a class="text-button" href="#projects">Explore Projects <span>↓</span></a>
-                <a class="outline-button" href="mailto:alex.chen@example.com">Contact Me</a>
+                <a class="text-button" href="#projects">프로젝트 둘러보기 <span>↓</span></a>
+                <a class="github-button" href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer">◈ GitHub</a>
             </div>
         </section>
 
         <section id="projects" class="projects-section" aria-labelledby="projects-title">
             <div class="section-heading">
-                <h2 id="projects-title">Featured Projects</h2>
-                <p>A handpicked selection of production-grade architectures and generative systems.</p>
+                <h2 id="projects-title">주요 프로젝트</h2>
+                <p>실제 서비스 수준의 아키텍처와 생성형 시스템을 엄선했습니다.</p>
             </div>
             <div class="filter-tabs" role="group" aria-label="Project filters">
                 <button class="active" type="button">All</button>
@@ -48,15 +64,15 @@
     </main>
 
     <footer id="contact">
-        <div><strong>© 2026 Alex Chen. All rights reserved.</strong><small>Reach out at <a href="mailto:alex.chen@example.com">alex.chen@dev</a></small></div>
-        <div class="footer-links"><a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub">◈</a><a href="#contact" aria-label="LinkedIn">in</a><a href="#contact" aria-label="RSS">◔</a></div>
+        <div><strong>© 2026 박성진. All rights reserved.</strong><small>Reach out at <a href="mailto:alex.chen@example.com">tjdwls530@gmail.com</a></small></div>
+        <div class="footer-links"><a href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer" aria-label="GitHub">◈</a><a href="#contact" aria-label="RSS">◔</a></div>
     </footer>
 
     <div class="project-modal" id="project-modal" hidden>
         <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <div class="modal-header">
                 <div><div class="category-list" id="modal-category"><span class="category">PROJECT</span></div><h2 id="modal-title">Intelligent Document Processing Pipeline</h2></div>
-                <div class="modal-actions"><a class="live-button" href="#">Live Demo ↗</a><a class="github-button" href="https://github.com" target="_blank" rel="noreferrer">◈ GitHub</a><button class="modal-close" type="button" aria-label="Close project details">×</button></div>
+                <div class="modal-actions"><a class="live-button" href="#">Live Demo ↗</a><a class="github-button" href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer">◈ GitHub</a><button class="modal-close" type="button" aria-label="Close project details">×</button></div>
             </div>
             <div class="modal-scroll-content">
                 <div class="modal-layout">
@@ -76,7 +92,7 @@
     <script>
         mermaid.initialize({ startOnLoad: false, theme: 'dark' });
     </script>
-    <script src="scripts.js"></script>
+    <script src="portfolio.js"></script>
 </body>
 
 </html>

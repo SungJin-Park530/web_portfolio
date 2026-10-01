@@ -1,4 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const themeToggle = document.querySelector('#theme-toggle');
+  let systemTheme;
+  try {
+    systemTheme = window.matchMedia?.('(prefers-color-scheme: dark)');
+  } catch {
+    systemTheme = null;
+  }
+  const setTheme = (theme) => {
+    const isDark = theme === 'dark';
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+    const label = `Switch to ${isDark ? 'light' : 'dark'} mode`;
+    themeToggle.setAttribute('aria-label', label);
+    themeToggle.title = label;
+  };
+
+  setTheme(document.documentElement.dataset.theme || 'light');
+  themeToggle.addEventListener('click', () => {
+    const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    try {
+      localStorage.setItem('theme', nextTheme);
+    } catch {
+    }
+  });
+
+  const followSystemTheme = (event) => {
+    try {
+      if (localStorage.getItem('theme')) return;
+    } catch {
+    }
+    setTheme(event.matches ? 'dark' : 'light');
+  };
+  if (systemTheme?.addEventListener) {
+    systemTheme.addEventListener('change', followSystemTheme);
+  } else {
+    systemTheme?.addListener(followSystemTheme);
+  }
+
   const projectList = document.querySelector('#project-list');
   const modal = document.querySelector('#project-modal');
   const closeButton = modal.querySelector('.modal-close');
@@ -44,7 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const renderYouTubePlayer = (container, videoUrl, title) => {
     const videoId = getYouTubeVideoId(videoUrl);
-    if (!/^[\w-]{11}$/.test(videoId)) return;
+    if (!/^[\w-]{11}$/.test(videoId)) {
+      container.classList.remove('has-video');
+      container.innerHTML = '<span>→</span>';
+      return;
+    }
 
     const frame = document.createElement('iframe');
     const origin = encodeURIComponent(window.location.origin);
@@ -79,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const frontmatter = window.jsyaml.load(match[1]) || {};
     return {
       ...frontmatter,
-      thumbnail: normalizeAssetPath(frontmatter.thumbnail),
       sourcePath: path,
       body: match[2].trim()
     };
@@ -185,8 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }));
       const projects = results
         .filter((result) => result.status === 'fulfilled')
-        .map((result) => result.value)
-        .sort((a, b) => Number(a.order || 9999) - Number(b.order || 9999));
+        .map((result) => result.value);
 
       if (projects.length === 0) {
         showEmptyState();

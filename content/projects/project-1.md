@@ -3,7 +3,6 @@ title: "IoT Occupancy Prediction"
 category: ["머신러닝", "개인 프로젝트"]
 role: ""
 period: "2026.08.20 - 2026.08.26"
-thumbnail: "../../asset/images/mlprj/ml-thumbnail.png"
 videoUrl: "https://www.youtube.com/watch?v=MS3Gb3q3yms"
 demoUrl: "https://iotmodel.streamlit.app/"
 githubUrl: "https://github.com/SungJin-Park530/MLPRJ"
@@ -20,7 +19,6 @@ techStack:
   - "NumPy"
   - "Joblib"
 tags: ["featured", "ml", "iot", "classification", "streamlit"]
-order: 1
 ---
 
 ## 📌 개요 (Overview)

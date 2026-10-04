@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const projectList = document.querySelector('#project-list');
+  const filterButtons = [...document.querySelectorAll('.filter-tabs button[data-category]')];
+  let projects = [];
+  let activeCategory = 'all';
   const modal = document.querySelector('#project-modal');
   const closeButton = modal.querySelector('.modal-close');
   const modalTitle = document.querySelector('#modal-title');
@@ -111,8 +114,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const showDemoUnavailable = (button) => {
+    const wrapper = button.parentElement;
+    wrapper.querySelector('.demo-tooltip')?.remove();
+    const tooltip = document.createElement('span');
+    tooltip.className = 'demo-tooltip';
+    tooltip.setAttribute('role', 'status');
+    tooltip.textContent = '이 프로젝트는 배포된 내역이 없습니다.';
+    wrapper.append(tooltip);
+    window.setTimeout(() => tooltip.remove(), 2600);
+  };
+
   const showEmptyState = () => {
     projectList.innerHTML = '<p class="project-list-status">등록된 프로젝트가 없습니다.</p>';
+  };
+
+  const renderProjects = () => {
+    const visibleProjects = activeCategory === 'all'
+      ? projects
+      : projects.filter((project) => categories(project.category).includes(activeCategory));
+
+    if (visibleProjects.length === 0) {
+      projectList.innerHTML = '<p class="project-list-status">해당 분류의 프로젝트가 없습니다.</p>';
+      return;
+    }
+
+    projectList.innerHTML = visibleProjects.map(renderCard).join('');
+    projectList.querySelectorAll('.dynamic-media-placeholder').forEach((container, index) => {
+      renderYouTubePlayer(container, visibleProjects[index].videoUrl, `${visibleProjects[index].title || 'Project'} video`);
+    });
+    bindCardEvents(visibleProjects);
   };
 
   const parseMarkdownFile = (text, path) => {
@@ -146,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <h4>KEY HIGHLIGHTS</h4>
             <ul>${highlights.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
             <div class="tech-tags">${techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}</div>
-            <div class="card-actions"><a class="live-button" href="${escapeHtml(project.demoUrl || '#')}">Live Demo ↗</a><a class="github-button" href="${escapeHtml(project.githubUrl || '#')}" target="_blank" rel="noreferrer">◈ GitHub</a></div>
+            <div class="card-actions"><span class="demo-action"><a class="live-button" href="${escapeHtml(project.demoUrl || '#')}">Live Demo ↗</a></span><a class="github-button" href="${escapeHtml(project.githubUrl || '#')}" target="_blank" rel="noreferrer">◈ GitHub</a></div>
           </div>
         </div>
       </article>`;
@@ -165,7 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
     modalTechStack.innerHTML = techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('');
     modalTags.innerHTML = tags.map((item) => `<span>${escapeHtml(item)}</span>`).join('');
     renderYouTubePlayer(modalVideo, project.videoUrl, `${project.title || 'Project'} video`);
-    modalLinks[0].href = project.videoUrl || '#';
+    modalLinks[0].href = project.demoUrl || '#';
+    modalLinks[0].dataset.demoUrl = project.demoUrl || '';
     modalLinks[1].href = project.githubUrl || 'https://github.com';
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -198,6 +230,15 @@ document.addEventListener('DOMContentLoaded', () => {
     projectList.querySelectorAll('.project-card').forEach((card) => {
       const openCard = () => openModal(projects[Number(card.dataset.projectIndex)]);
       card.addEventListener('click', (event) => {
+        const demoLink = event.target.closest('.live-button');
+        if (demoLink) {
+          const project = projects[Number(card.dataset.projectIndex)];
+          if (!String(project.demoUrl || '').trim()) {
+            event.preventDefault();
+            showDemoUnavailable(demoLink);
+          }
+          return;
+        }
         if (!event.target.closest('a')) openCard();
       });
       card.addEventListener('keydown', (event) => {
@@ -225,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) throw new Error(`Project request failed: ${response.status}`);
         return parseMarkdownFile(await response.text(), relativePath);
       }));
-      const projects = results
+      projects = results
         .filter((result) => result.status === 'fulfilled')
         .map((result) => result.value);
 
@@ -234,16 +275,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      projectList.innerHTML = projects.map(renderCard).join('');
-      projectList.querySelectorAll('.dynamic-media-placeholder').forEach((container, index) => {
-        renderYouTubePlayer(container, projects[index].videoUrl, `${projects[index].title || 'Project'} video`);
-      });
-      bindCardEvents(projects);
+      renderProjects();
     } catch (error) {
       console.error('Unable to load projects:', error);
       showEmptyState();
     }
   };
+
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeCategory = button.dataset.category;
+      filterButtons.forEach((filterButton) => {
+        const isActive = filterButton === button;
+        filterButton.classList.toggle('active', isActive);
+        filterButton.setAttribute('aria-pressed', String(isActive));
+      });
+      if (projects.length > 0) renderProjects();
+    });
+  });
 
   document.querySelectorAll('a[href="#projects"]').forEach((link) => {
     link.addEventListener('click', (event) => {
@@ -253,6 +302,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   closeButton.addEventListener('click', closeModal);
+  modalLinks[0].addEventListener('click', (event) => {
+    if (!String(event.currentTarget.dataset.demoUrl || '').trim()) {
+      event.preventDefault();
+      showDemoUnavailable(event.currentTarget);
+    }
+  });
   modal.addEventListener('click', (event) => {
     if (event.target === modal) closeModal();
   });

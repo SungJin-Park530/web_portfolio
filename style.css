@@ -116,6 +116,10 @@ footer { display: flex; justify-content: space-between; align-items: center; pad
 .tech-tags span { padding: 4px 8px; border-radius: 5px; font-size: 13px; }
 .card-actions { gap: 10px; margin-top: 18px; }
 .card-actions a { padding: 8px 14px; border-radius: 5px; font-size: 13px; }
+.demo-action { position: relative; display: inline-flex; }
+.demo-tooltip { position: absolute; z-index: 2; bottom: calc(100% + 9px); left: 50%; width: max-content; max-width: min(280px, 80vw); padding: 9px 12px; color: #fff; background: #202b40; border: 1px solid #52617a; border-radius: 6px; box-shadow: 0 5px 18px #0005; font-size: 12px; line-height: 1.4; text-align: center; pointer-events: none; transform: translateX(-50%); animation: demo-tooltip-life 2.6s ease both; }
+.demo-tooltip::after { position: absolute; top: 100%; left: 50%; width: 8px; height: 8px; content: ""; background: #202b40; border-right: 1px solid #52617a; border-bottom: 1px solid #52617a; transform: translate(-50%, -50%) rotate(45deg); }
+@keyframes demo-tooltip-life { 0% { opacity: 0; translate: 0 4px; } 10%, 78% { opacity: 1; translate: 0 0; } 100% { opacity: 0; translate: 0 -2px; } }
 footer { width: min(1120px, calc(100% - 48px)); margin: 0 auto; padding: 40px 24px 28px; font-size: 14px; }
 footer small { margin-top: 5px; font-size: 12px; }
 .footer-links { gap: 12px; }

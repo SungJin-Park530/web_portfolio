@@ -37,6 +37,11 @@ tags: ["featured", "LLM", "Advenced RAG", "legal"]
 노동법 상담, 증거 문서 분석, 임금체불 진정서 초안 작성과 법률 데이터 기반 검색을 제공합니다.
 사용자는 일반 사용자와 전문자격 노무사, 시스템 관리자로 구분됩니다.
 
+## 프로젝트 보고서
+| 보고서 | 별첨 |
+| :---: | :---: |
+| [![](assets/images/workhelper/report.png)](https://drive.google.com/file/d/1z77QWlTrn-q8-e5Nt0XfNtqUGK486Avh/view?usp=sharing) | [![](assets/images/workhelper/etc.png)](https://drive.google.com/file/d/1F5LqKwR31_nzdSNEVt11HtvXAsZL0L_8/view?usp=sharing) |
+
 ## 팀 구성 및 역할 분담
 
 | 담당자 | 구분 | 역할 |

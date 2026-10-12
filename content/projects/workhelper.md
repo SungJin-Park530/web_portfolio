@@ -1,12 +1,12 @@
 ---
 title: "WorkHelper - 노동자 도우미 AI 서비스"
-category: ["Full-Stack", "React", "Spring Boot", "FastAPI", "LLM", "팀 프로젝트"]
+category: ["PM", "Full-Stack", "React", "Spring Boot", "FastAPI", "LLM", "팀 프로젝트"]
 role: "PM, 프로젝트 총괄, FastAPI 기반 AI 서버 개발, AI 서버 CI/CD"
 period: "2026.09.10 - 22026.10.14"
 videoUrl: "https://youtu.be/jGwFLN5WKLM"
 demoUrl: "http://workhelper-front-bucket.s3-website.ap-northeast-2.amazonaws.com/"
 githubUrl: "https://github.com/orgs/workhelper-team/repositories"
-summary: "프로젝트의 목적과 핵심 가치를 한 문장으로 작성합니다."
+summary: "노동자의 임금 문제에 대한 상담과 정황분석을 제공하고, 노동청 진정 서식과 함께 진정 절차 진행을 돕습니다. 또한 법률 책임과 전문성을 위한 노무사와 연결된 QnA를 제공합니다."
 highlights:
   - "Advenced RAG를 활용한 AI 채팅 법률 상담 서비스"
   - "OCR과 LLM 연계를 통한 증거 및 노동자 상황 법률 분석 서비스"

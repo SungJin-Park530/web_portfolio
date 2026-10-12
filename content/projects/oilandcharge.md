@@ -1,6 +1,6 @@
 ---
 title: "OilAndCharge"
-category: ["Full-Stack", "팀 프로젝트"]
+category: ["PM", "Full-Stack", "Flask", "팀 프로젝트"]
 role: "PM, 프로젝트 총괄, API 관리"
 period: "2026.08.14 ~ 2026.08.19"
 videoUrl: "https://www.youtube.com/watch?v=MbcDpnc_Ljg"

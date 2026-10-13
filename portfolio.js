@@ -52,6 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalTechStack = document.querySelector('#modal-tech-stack');
   const modalTags = document.querySelector('#modal-tags');
   const modalLinks = modal.querySelectorAll('.modal-actions a');
+  const wizardHeading = document.querySelector('#wizard-heading');
+  const wizardDescription = document.querySelector('#wizard-description');
+  const wizardBanner = document.querySelector('.wizard-banner');
 
   const escapeHtml = (value) => String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -158,6 +161,58 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   };
 
+  const loadWizardContent = async () => {
+    const path = './content/wizard/setup.md';
+    try {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Wizard content request failed: ${response.status}`);
+
+      const content = parseMarkdownFile(await response.text(), path);
+      if (typeof content.title !== 'string' || !content.title.trim()) {
+        throw new Error(`Wizard title not found: ${path}`);
+      }
+      if (!content.body) throw new Error(`Wizard description is empty: ${path}`);
+
+      wizardHeading.textContent = content.title;
+      wizardDescription.innerHTML = window.marked.parse(content.body);
+
+      if (content.bannerImage !== undefined && typeof content.bannerImage !== 'string') {
+        throw new Error(`Wizard banner image path must be a string: ${path}`);
+      }
+
+      const bannerImagePath = content.bannerImage?.trim();
+      if (bannerImagePath) {
+        const contentUrl = new URL(response.url || path, document.baseURI);
+        const bannerDirectory = new URL('.', contentUrl);
+        const bannerUrl = new URL(bannerImagePath, contentUrl);
+        if (bannerUrl.origin !== bannerDirectory.origin || !bannerUrl.pathname.startsWith(bannerDirectory.pathname)) {
+          throw new Error(`Wizard banner image must be inside ${bannerDirectory.pathname}`);
+        }
+
+        const image = document.createElement('img');
+        image.className = 'wizard-banner-image';
+        image.alt = '';
+        image.addEventListener('error', () => {
+          console.error(`Unable to load wizard banner image: ${bannerUrl.href}`);
+          image.remove();
+          const errorMessage = document.createElement('span');
+          errorMessage.className = 'wizard-banner-error';
+          errorMessage.textContent = '배너 이미지를 불러오지 못했습니다.';
+          wizardBanner.append(errorMessage);
+        }, { once: true });
+        image.src = bannerUrl.href;
+        wizardBanner.replaceChildren(image);
+      }
+    } catch (error) {
+      console.error('Unable to load wizard content:', error);
+      const errorMessage = document.createElement('p');
+      errorMessage.className = 'wizard-load-error';
+      errorMessage.setAttribute('role', 'alert');
+      errorMessage.textContent = '설치 마법사 내용을 불러오지 못했습니다.';
+      wizardDescription.append(errorMessage);
+    }
+  };
+
   const renderCard = (project, index) => {
     const highlights = list(project.highlights);
     const techStack = list(project.techStack);
@@ -165,19 +220,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const roleMarkup = showRole ? `<h4>ROLE</h4><p class="project-role">${escapeHtml(project.role)}</p>` : '';
 
     return `
-      <article class="project-card" tabindex="0" role="button" aria-label="Open ${escapeHtml(project.title)} project details" data-project-index="${index}">
-        <div class="project-topline"><div class="category-list">${renderCategories(project.category)}</div><span class="date">${escapeHtml(project.period)}</span></div>
-        <h3>${escapeHtml(project.title)}</h3>
-        <div class="project-body">
-          <div class="video-placeholder dynamic-media-placeholder" aria-label="YouTube video placeholder"><span>→</span></div>
-          <div class="project-info">
-            <h4>SUMMARY</h4>
-            <p>${escapeHtml(project.summary)}</p>
-            ${roleMarkup}
-            <h4>KEY HIGHLIGHTS</h4>
-            <ul>${highlights.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
-            <div class="tech-tags">${techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}</div>
-            <div class="card-actions"><span class="demo-action"><a class="live-button" href="${escapeHtml(project.demoUrl || '#')}">Live Demo ↗</a></span><a class="github-button" href="${escapeHtml(project.githubUrl || '#')}" target="_blank" rel="noreferrer">◈ GitHub</a></div>
+      <article class="project-card project-window" tabindex="0" role="button" aria-label="Open ${escapeHtml(project.title)} project details" data-project-index="${index}">
+        <div class="project-window-titlebar">
+          <span class="project-window-icon" aria-hidden="true"></span>
+          <h3>${escapeHtml(project.title)}</h3>
+          <span class="project-window-controls" aria-hidden="true"><span>_</span><span>□</span><span>X</span></span>
+        </div>
+        <div class="project-window-content">
+          <div class="project-topline"><div class="category-list">${renderCategories(project.category)}</div><span class="date">${escapeHtml(project.period)}</span></div>
+          <div class="project-body">
+            <div class="video-placeholder dynamic-media-placeholder" aria-label="YouTube video placeholder"><span>▶</span></div>
+            <div class="project-info">
+              <h4>SUMMARY</h4>
+              <p>${escapeHtml(project.summary)}</p>
+              ${roleMarkup}
+              <h4>KEY HIGHLIGHTS</h4>
+              <ul>${highlights.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+              <div class="tech-tags">${techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}</div>
+              <div class="card-actions">
+                <span class="demo-action"><a class="live-button" href="${escapeHtml(project.demoUrl || '#')}">Demo</a></span>
+                <a class="github-button" href="${escapeHtml(project.githubUrl || '#')}" target="_blank" rel="noreferrer">GitHub</a>
+                <button class="details-button" type="button">상세보기</button>
+              </div>
+            </div>
           </div>
         </div>
       </article>`;
@@ -229,7 +294,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const bindCardEvents = (projects) => {
     projectList.querySelectorAll('.project-card').forEach((card) => {
       const openCard = () => openModal(projects[Number(card.dataset.projectIndex)]);
+      card.querySelector('.dynamic-media-placeholder').addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
       card.addEventListener('click', (event) => {
+        if (event.target.closest('.dynamic-media-placeholder')) {
+          event.stopPropagation();
+          return;
+        }
         const demoLink = event.target.closest('.live-button');
         if (demoLink) {
           const project = projects[Number(card.dataset.projectIndex)];
@@ -239,10 +311,15 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           return;
         }
+        if (event.target.closest('.details-button')) {
+          event.stopPropagation();
+          openCard();
+          return;
+        }
         if (!event.target.closest('a')) openCard();
       });
       card.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
+        if (event.target === card && (event.key === 'Enter' || event.key === ' ')) {
           event.preventDefault();
           openCard();
         }
@@ -315,5 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.key === 'Escape' && !modal.hidden) closeModal();
   });
 
+  loadWizardContent();
   loadProjects();
 });

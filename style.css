@@ -118,8 +118,9 @@ footer { display: flex; justify-content: space-between; align-items: center; pad
 .card-actions { gap: 10px; margin-top: 18px; }
 .card-actions a { padding: 8px 14px; border-radius: 5px; font-size: 13px; }
 .demo-action { position: relative; display: inline-flex; }
-.demo-tooltip { position: absolute; z-index: 2; bottom: calc(100% + 9px); left: 50%; width: max-content; max-width: min(280px, 80vw); padding: 9px 12px; color: #fff; background: #202b40; border: 1px solid #52617a; border-radius: 6px; box-shadow: 0 5px 18px #0005; font-size: 12px; line-height: 1.4; text-align: center; pointer-events: none; transform: translateX(-50%); animation: demo-tooltip-life 2.6s ease both; }
-.demo-tooltip::after { position: absolute; top: 100%; left: 50%; width: 8px; height: 8px; content: ""; background: #202b40; border-right: 1px solid #52617a; border-bottom: 1px solid #52617a; transform: translate(-50%, -50%) rotate(45deg); }
+.demo-tooltip { position: absolute; z-index: 2; bottom: calc(100% + 9px); left: 50%; width: max-content; max-width: min(280px, 80vw); padding: 6px 9px; color: #000; background: #ffffe1; border: 1px solid #000; border-radius: 0; box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4); font-family: "MS Sans Serif", "Gulim", sans-serif; font-size: 12px; line-height: 1.4; text-align: center; pointer-events: none; transform: translateX(-50%); animation: demo-tooltip-life 2.6s ease both; }
+.demo-tooltip::before { position: absolute; top: 100%; left: 50%; width: 0; height: 0; content: ""; border-top: 7px solid #000; border-right: 7px solid transparent; border-left: 7px solid transparent; transform: translateX(-50%); }
+.demo-tooltip::after { position: absolute; top: 100%; left: 50%; width: 0; height: 0; content: ""; border-top: 6px solid #ffffe1; border-right: 6px solid transparent; border-left: 6px solid transparent; transform: translateX(-50%); }
 @keyframes demo-tooltip-life { 0% { opacity: 0; translate: 0 4px; } 10%, 78% { opacity: 1; translate: 0 0; } 100% { opacity: 0; translate: 0 -2px; } }
 footer { width: min(1120px, calc(100% - 48px)); margin: 0 auto; padding: 40px 24px 28px; font-size: 14px; }
 footer small { margin-top: 5px; font-size: 12px; }
@@ -598,14 +599,20 @@ body {
   box-shadow: inset 1px 1px #404040, inset -1px -1px #dfdfdf;
 }
 
-.system-tray a {
+.system-tray .tray-github-link {
   display: grid;
-  width: 20px;
+  width: 58px;
   height: 24px;
   place-items: center;
-  color: #111;
-  font-size: 16px;
   text-decoration: none;
+}
+
+.tray-github-link img {
+  display: block;
+  width: 100%;
+  max-height: 18px;
+  height: auto;
+  object-fit: contain;
 }
 
 .system-tray a:focus-visible,
@@ -780,9 +787,8 @@ body {
     padding-inline: 4px;
   }
 
-  .system-tray a {
-    width: 17px;
-    font-size: 14px;
+  .system-tray .tray-github-link {
+    width: 52px;
   }
 
   .system-tray time {

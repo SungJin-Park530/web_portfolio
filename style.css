@@ -703,6 +703,162 @@ body {
   border-bottom: 1px solid #fff;
 }
 
+#minesweeper-window {
+  position: fixed;
+  z-index: 10001;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #0005;
+  font-family: "MS Sans Serif", "Gulim", sans-serif;
+}
+
+.minesweeper-panel {
+  width: 220px;
+  padding: 4px;
+  color: #111;
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #000;
+  border-bottom: 2px solid #000;
+  box-shadow: 1px 1px 0 #808080;
+}
+
+.minesweeper-titlebar {
+  display: flex;
+  height: 24px;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 3px 2px 6px;
+  color: #fff;
+  background: linear-gradient(90deg, #000080, #1084d0);
+}
+
+.minesweeper-titlebar h2 {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.minesweeper-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.minesweeper-controls button {
+  display: grid;
+  width: 16px;
+  height: 14px;
+  place-items: center;
+  padding: 0;
+  color: #111;
+  background: #c0c0c0;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #404040;
+  border-bottom: 1px solid #404040;
+  font: bold 10px/1 Arial, sans-serif;
+}
+
+.minesweeper-controls button:disabled {
+  color: #808080;
+  text-shadow: 1px 1px #fff;
+}
+
+.minesweeper-header {
+  display: flex;
+  height: 42px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 7px 1px;
+  padding: 3px 5px;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+
+.minesweeper-counter {
+  min-width: 42px;
+  padding: 1px 2px;
+  color: #f00;
+  background: #000;
+  font: bold 21px/1 "Courier New", monospace;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.minesweeper-reset {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  padding: 0;
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+  font: 17px/1 "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
+  cursor: pointer;
+}
+
+.minesweeper-reset:active {
+  border-color: #404040 #fff #fff #404040;
+  box-shadow: inset 1px 1px #808080;
+}
+
+.minesweeper-board {
+  display: grid;
+  width: max-content;
+  grid-template-columns: repeat(9, 20px);
+  grid-template-rows: repeat(9, 20px);
+  margin: 0 auto 1px;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+
+.minesweeper-cell {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  padding: 0;
+  color: #111;
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #808080;
+  border-bottom: 2px solid #808080;
+  font: bold 13px/1 Arial, sans-serif;
+  cursor: pointer;
+}
+
+.minesweeper-cell.is-open {
+  border: 1px solid #7b7b7b;
+  cursor: default;
+}
+
+.minesweeper-cell.is-open[data-number="1"] { color: #00f; }
+.minesweeper-cell.is-open[data-number="2"] { color: #008000; }
+.minesweeper-cell.is-open[data-number="3"] { color: #f00; }
+.minesweeper-cell.is-open[data-number="4"] { color: #000080; }
+.minesweeper-cell.is-open[data-number="5"] { color: #800000; }
+.minesweeper-cell.is-open[data-number="6"] { color: #008080; }
+.minesweeper-cell.is-open[data-number="7"] { color: #000; }
+.minesweeper-cell.is-open[data-number="8"] { color: #808080; }
+.minesweeper-cell.is-flagged { font-size: 12px; }
+.minesweeper-cell.is-mine { background: #f00; }
+
 .system-tray a:focus-visible,
 .taskbar a:focus-visible,
 .taskbar button:focus-visible {

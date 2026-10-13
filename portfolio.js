@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const trayClock = document.querySelector('#tray-clock');
   const startMenu = document.querySelector('#start-menu');
   const startMenuToggle = document.querySelector('#start-menu-toggle');
+  const minesweeperMenuItem = startMenu.querySelector('[data-action="open-minesweeper"]');
   let lastOpenedProjectKey = null;
   let lastModalScrollTop = 0;
   let notepadContentLoaded = false;
@@ -422,6 +423,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   startMenuToggle.addEventListener('click', () => {
     setStartMenuOpen(startMenu.hidden);
+  });
+  minesweeperMenuItem.addEventListener('click', () => {
+    setStartMenuOpen(false);
+    if (!window.Minesweeper) {
+      throw new Error('Minesweeper script is unavailable.');
+    }
+    window.Minesweeper.open();
   });
   document.addEventListener('click', (event) => {
     if (startMenu.hidden) return;

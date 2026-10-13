@@ -93,7 +93,7 @@
     <div class="start-menu" id="start-menu" role="menu" aria-label="Windows 98 시작 메뉴" hidden>
         <div class="start-menu-sidebar"><span>Portfolio 98</span></div>
         <div class="start-menu-list">
-            <button class="start-menu-item" type="button" role="menuitem"><span class="start-menu-icon" aria-hidden="true">💣</span><span>지뢰찾기(M)</span></button>
+            <button class="start-menu-item" type="button" role="menuitem" data-action="open-minesweeper"><span class="start-menu-icon" aria-hidden="true">💣</span><span>지뢰찾기(M)</span></button>
             <button class="start-menu-item" type="button" role="menuitem"><span class="start-menu-icon" aria-hidden="true">⚙️</span><span>설정(S)</span></button>
             <button class="start-menu-item" type="button" role="menuitem"><span class="start-menu-icon" aria-hidden="true">❓</span><span>도움말(H)</span></button>
             <div class="start-menu-divider" role="separator"></div>
@@ -161,12 +161,32 @@
         </section>
     </div>
 
+    <div id="minesweeper-window" style="display: none;" aria-hidden="true">
+        <section class="minesweeper-panel" role="dialog" aria-modal="true" aria-labelledby="minesweeper-title">
+            <header class="minesweeper-titlebar">
+                <h2 id="minesweeper-title">지뢰찾기</h2>
+                <div class="minesweeper-controls">
+                    <button type="button" aria-label="최소화" disabled>_</button>
+                    <button type="button" aria-label="최대화" disabled>□</button>
+                    <button class="minesweeper-close" type="button" aria-label="지뢰찾기 닫기">X</button>
+                </div>
+            </header>
+            <div class="minesweeper-header">
+                <output class="minesweeper-counter" id="minesweeper-mines" aria-label="남은 지뢰 수">010</output>
+                <button class="minesweeper-reset" id="minesweeper-reset" type="button" aria-label="새 게임">🙂</button>
+                <output class="minesweeper-counter" id="minesweeper-timer" aria-label="경과 시간">000</output>
+            </div>
+            <div class="minesweeper-board" id="minesweeper-board" role="grid" aria-label="9 x 9 지뢰찾기 보드"></div>
+        </section>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
     <script>
         mermaid.initialize({ startOnLoad: false, theme: 'dark' });
     </script>
+    <script src="minesweeper.js"></script>
     <script src="portfolio.js"></script>
 </body>
 

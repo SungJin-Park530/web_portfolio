@@ -1,43 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const themeToggle = document.querySelector('#theme-toggle');
-  let systemTheme;
-  try {
-    systemTheme = window.matchMedia?.('(prefers-color-scheme: dark)');
-  } catch {
-    systemTheme = null;
-  }
-  const setTheme = (theme) => {
-    const isDark = theme === 'dark';
-    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
-    themeToggle.setAttribute('aria-pressed', String(isDark));
-    const label = `Switch to ${isDark ? 'light' : 'dark'} mode`;
-    themeToggle.setAttribute('aria-label', label);
-    themeToggle.title = label;
-  };
-
-  setTheme(document.documentElement.dataset.theme || 'light');
-  themeToggle.addEventListener('click', () => {
-    const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    try {
-      localStorage.setItem('theme', nextTheme);
-    } catch {
-    }
-  });
-
-  const followSystemTheme = (event) => {
-    try {
-      if (localStorage.getItem('theme')) return;
-    } catch {
-    }
-    setTheme(event.matches ? 'dark' : 'light');
-  };
-  if (systemTheme?.addEventListener) {
-    systemTheme.addEventListener('change', followSystemTheme);
-  } else {
-    systemTheme?.addListener(followSystemTheme);
-  }
-
   const projectList = document.querySelector('#project-list');
   const filterButtons = [...document.querySelectorAll('.filter-tabs button[data-category]')];
   let projects = [];
@@ -45,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const modal = document.querySelector('#project-modal');
   const closeButton = modal.querySelector('.modal-close');
   const modalTitle = document.querySelector('#modal-title');
-  const modalCategory = document.querySelector('#modal-category');
+  const modalAddress = document.querySelector('#explorer-address');
+  const modalRole = document.querySelector('#modal-role');
   const modalDuration = document.querySelector('#modal-duration');
   const modalContent = document.querySelector('#modal-content');
   const modalVideo = modal.querySelector('.modal-video');
@@ -236,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
               ${roleMarkup}
               <h4>KEY HIGHLIGHTS</h4>
               <ul>${highlights.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+              <h4>TECH STACK</h4>
               <div class="tech-tags">${techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}</div>
               <div class="card-actions">
                 <span class="demo-action"><a class="live-button" href="${escapeHtml(project.demoUrl || '#')}">Demo</a></span>
@@ -250,16 +213,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const openModal = (project) => {
     pauseCardVideos();
-    const tags = list(project.tags);
-    const techStack = list(project.techStack);
-    modalTitle.textContent = project.title || 'Project Details';
-    modalCategory.innerHTML = renderCategories(project.category) || '<span class="category">PROJECT</span>';
+    const filename = String(project.sourcePath || 'project.md').split(/[\\/]/).pop();
+    const projectPath = `C:\\Projects\\${filename}`;
+    const projectTitle = project.title || filename.replace(/\.md$/i, '');
+    modalTitle.textContent = `C:\\Projects\\${projectTitle}.md - Explorer`;
+    modalAddress.value = projectPath;
+    modalRole.textContent = project.role || 'N/A';
     modalDuration.textContent = project.period || '-';
     const markdownBody = normalizeAssetPath(project.body || '');
     modalContent.innerHTML = window.marked.parse(markdownBody);
     renderMermaidDiagrams().catch((error) => console.error('Unable to render Mermaid diagram:', error));
-    modalTechStack.innerHTML = techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('');
-    modalTags.innerHTML = tags.map((item) => `<span>${escapeHtml(item)}</span>`).join('');
+    modalTechStack.innerHTML = list(project.techStack)
+      .map((item) => `<span>${escapeHtml(item)}</span>`)
+      .join('');
+    modalTags.innerHTML = list(project.tags)
+      .map((item) => `<span>${escapeHtml(item)}</span>`)
+      .join('');
     renderYouTubePlayer(modalVideo, project.videoUrl, `${project.title || 'Project'} video`);
     modalLinks[0].href = project.demoUrl || '#';
     modalLinks[0].dataset.demoUrl = project.demoUrl || '';

@@ -737,7 +737,14 @@ body {
   border-right: 2px solid #fff;
   border-bottom: 2px solid #fff;
   font: 13px/1.6 "Courier New", Consolas, monospace;
-  white-space: pre-wrap;
+}
+
+.notepad-content p {
+  margin: 0 0 13px;
+}
+
+.notepad-content p:last-child {
+  margin-bottom: 0;
 }
 
 @media (max-width: 620px) {

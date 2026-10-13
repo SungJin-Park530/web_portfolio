@@ -21,9 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const notepadModal = document.querySelector('#notepad-modal');
   const notepadCloseButton = notepadModal.querySelector('.notepad-close');
   const notepadOpenButton = document.querySelector('#open-notepad');
+  const notepadContent = document.querySelector('#notepad-content');
   const trayClock = document.querySelector('#tray-clock');
   let lastOpenedProjectKey = null;
   let lastModalScrollTop = 0;
+  let notepadContentLoaded = false;
 
   const escapeHtml = (value) => String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -131,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const loadWizardContent = async () => {
-    const path = './content/wizard/setup.md';
+    const path = './content/pages/setup.md';
     try {
       const response = await fetch(path);
       if (!response.ok) throw new Error(`Wizard content request failed: ${response.status}`);
@@ -179,6 +181,24 @@ document.addEventListener('DOMContentLoaded', () => {
       errorMessage.setAttribute('role', 'alert');
       errorMessage.textContent = '설치 마법사 내용을 불러오지 못했습니다.';
       wizardDescription.append(errorMessage);
+    }
+  };
+
+  const loadNotepadContent = async () => {
+    const path = './content/pages/copyright.md';
+    try {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Copyright content request failed: ${response.status}`);
+
+      const content = parseMarkdownFile(await response.text(), path);
+      notepadContent.innerHTML = window.marked.parse(content.body);
+      notepadContentLoaded = true;
+    } catch (error) {
+      console.error('Unable to load Notepad content:', error);
+      const errorMessage = document.createElement('p');
+      errorMessage.setAttribute('role', 'alert');
+      errorMessage.textContent = '저작권 문서를 불러오지 못했습니다.';
+      notepadContent.replaceChildren(errorMessage);
     }
   };
 
@@ -264,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     notepadModal.hidden = false;
     document.body.style.overflow = 'hidden';
     notepadCloseButton.focus();
+    if (!notepadContentLoaded) loadNotepadContent();
   };
 
   const closeNotepad = () => {

@@ -1,6 +1,6 @@
 ---
 title: "포트폴리오 설치 프로그램입니다. 테스트"
-bannerImage: "" # 예: "wizard-banner.png" (content/wizard 폴더 내 이미지 파일명)
+bannerImage: "" # 예: "wizard-banner.png" (content/pages 폴더 내 이미지 파일명)
 ---
 
 포트폴리오를 방문해 주셔서 감사합니다. 웹 플랫폼과 AI 솔루션을 구축하는 풀스택 & AI 엔지니어의 작업물을 확인하실 수 있습니다.

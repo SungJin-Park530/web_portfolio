@@ -5,84 +5,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>박성진 | AI & 풀스택 개발자</title>
-    <script>
-        (() => {
-            try {
-                const savedTheme = localStorage.getItem('theme');
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                document.documentElement.dataset.theme = savedTheme === 'dark' || savedTheme === 'light'
-                    ? savedTheme
-                    : (prefersDark ? 'dark' : 'light');
-            } catch {
-                document.documentElement.dataset.theme = 'light';
-            }
-        })();
-    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header class="site-header">
-        <a class="brand" href="#hero">박성진 <span>· AI &amp; 풀스택 개발자</span></a>
-        <nav class="top-nav" aria-label="Main navigation">
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
-            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="true" title="Switch to light mode">
-                <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
-                <span class="theme-icon theme-icon-moon" aria-hidden="true">☾</span>
-            </button>
-        </nav>
+        <a class="brand" href="#hero">
+            <span class="window-icon" aria-hidden="true"><span></span></span>
+            박성진 <span class="brand-role">· FULL-STACK &amp; AI</span>
+        </a>
+        <div class="window-controls" role="group" aria-label="Window controls">
+            <span class="window-control" aria-hidden="true">_</span>
+            <span class="window-control" aria-hidden="true">□</span>
+            <span class="window-control window-close" aria-hidden="true">X</span>
+        </div>
     </header>
 
     <main>
-        <section id="hero" class="hero" aria-labelledby="hero-title">
-            <div class="availability"><span></span> 새로운 기회를 찾고 있습니다</div>
-            <h1 id="hero-title">설명 가능한 시스템과<br>효율적인 AI 서비스를 만듭니다</h1>
-            <p class="role">풀스택 &amp; AI 개발자</p>
-            <p class="intro">탄탄한 기반 위에 LLM 및 AI를 연결해 효율적인 시스템을 만듭니다.<br class="desktop-only">확장성 높고 신뢰 가능한 구조를 설계해<br class="desktop-only">높은 고도화 가능성을 추구합니다.</p>
-            <div class="hero-actions">
-                <a class="text-button" href="#projects">프로젝트 둘러보기 <span>↓</span></a>
-                <a class="github-button" href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer">◈ GitHub</a>
+        <section id="hero" class="hero" aria-labelledby="wizard-heading">
+            <div class="setup-wizard">
+                <div class="wizard-titlebar">
+                    <span>Portfolio Setup Wizard</span>
+                </div>
+                <div class="wizard-content">
+                    <div class="wizard-banner" aria-hidden="true"></div>
+                    <div class="wizard-copy">
+                        <h2 id="wizard-heading">포트폴리오 마법사를 로드하고 있습니다...</h2>
+                        <div id="wizard-description">
+                            <p>마법사가 포트폴리오를 로드하기 위한 주문을 잊은 것 같습니다. 조금만 기다려주세요.</p>
+                            <p>살펴보기를 시작하려면 [다음]을 누르십시오.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-divider" aria-hidden="true"></div>
+                <div class="wizard-actions">
+                    <button class="wizard-button" type="button" disabled>&lt; 뒤로(B)</button>
+                    <a class="wizard-button wizard-next" href="#projects">다음(N) &gt;</a>
+                    <a class="wizard-button" href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer">GitHub...</a>
+                </div>
             </div>
         </section>
 
         <section id="projects" class="projects-section" aria-labelledby="projects-title">
-            <div class="section-heading">
-                <h2 id="projects-title">주요 프로젝트</h2>
-                <p>기획과 개발부터 배포까지 설명 가능한 서비스를 설계합니다.</p>
+            <div class="explorer-chrome">
+                <div class="projects-titlebar">
+                    <span class="projects-folder-icon" aria-hidden="true">📁</span>
+                    <h2 id="projects-title">C:\Projects - File Explorer</h2>
+                    <div class="projects-window-controls" aria-hidden="true"><span>_</span><span>□</span><span>X</span></div>
+                </div>
+                <nav class="projects-menu" aria-label="File Explorer menu">
+                    <span>파일(F)</span><span>편집(E)</span><span>보기(V)</span><span>도움말(H)</span>
+                </nav>
+                <div class="projects-toolbar" role="group" aria-label="프로젝트 도구 모음">
+                    <button class="toolbar-filter active" type="button" data-filter="all" aria-pressed="true">🗂️ 전체</button>
+                    <button class="toolbar-filter" type="button" data-filter="team" aria-pressed="false">👥 팀 프로젝트</button>
+                    <button class="toolbar-filter" type="button" data-filter="personal" aria-pressed="false">👤 개인 프로젝트</button>
+                    <span class="toolbar-divider" aria-hidden="true"></span>
+                    <a class="toolbar-projects" href="#projects">📁 프로젝트</a>
+                </div>
+                <div class="projects-addressbar">
+                    <label>주소(A):</label>
+                    <div class="projects-address-field"><span>📁 C:\Projects\</span><span aria-hidden="true">▼</span></div>
+                </div>
             </div>
-            <div class="filter-tabs" role="group" aria-label="프로젝트 분류">
-                <button class="active" type="button" data-category="all" aria-pressed="true">전체</button>
-                <button type="button" data-category="팀 프로젝트" aria-pressed="false">팀 프로젝트</button>
-                <button type="button" data-category="개인 프로젝트" aria-pressed="false">개인 프로젝트</button>
+            <div class="explorer-pane">
+                <div class="project-list" id="project-list" aria-live="polite"></div>
             </div>
-
-            <div class="project-list" id="project-list" aria-live="polite"></div>
         </section>
     </main>
 
-    <footer id="contact">
-        <div><strong>© 2026 박성진. All rights reserved.</strong><small>Reach out at <a href="mailto:alex.chen@example.com">tjdwls530@gmail.com</a></small></div>
-        <div class="footer-links"><a href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer" aria-label="GitHub">◈</a><a href="#contact" aria-label="RSS">◔</a></div>
+    <footer class="taskbar" aria-label="Windows taskbar">
+        <a class="taskbar-start" href="#hero">
+            <span class="windows-flag" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <strong>시작</strong>
+        </a>
+        <nav class="taskbar-tabs" aria-label="Open windows">
+            <a class="taskbar-tab" href="#hero"><span aria-hidden="true">📁</span> Setup Wizard</a>
+            <a class="taskbar-tab" href="#projects"><span aria-hidden="true">📁</span> Projects</a>
+            <button class="taskbar-tab" id="open-notepad" type="button"><span class="notepad-icon" aria-hidden="true"></span> Copyright.txt</button>
+        </nav>
+        <div class="system-tray">
+            <a class="tray-github-link" href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer" aria-label="GitHub profile" title="GitHub 프로필"><img src="content/pages/GitHub_Lockup_Black.png" alt=""></a>
+            <time id="tray-clock" aria-label="현재 시각"></time>
+        </div>
     </footer>
 
     <div class="project-modal" id="project-modal" hidden>
         <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <div class="modal-header">
-                <div><div class="category-list" id="modal-category"><span class="category">PROJECT</span></div><h2 id="modal-title">Intelligent Document Processing Pipeline</h2></div>
-                <div class="modal-actions"><span class="demo-action"><a class="live-button" href="#">Live Demo ↗</a></span><a class="github-button" href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer">◈ GitHub</a><button class="modal-close" type="button" aria-label="Close project details">×</button></div>
-            </div>
-            <div class="modal-scroll-content">
-                <div class="modal-layout">
-                    <div class="modal-main">
-                        <div class="modal-video video-placeholder" aria-label="YouTube video placeholder"><span>→</span></div>
-                        <div id="modal-content"></div>
-                    </div>
-                    <aside class="modal-sidebar"><div><span>DURATION</span><strong id="modal-duration"></strong></div><hr><h3>TECH STACK</h3><div class="tech-tags" id="modal-tech-stack"></div><div class="stack-group"><span>TAGS</span><div class="tech-tags" id="modal-tags"></div></div></aside>
+            <div class="explorer-titlebar">
+                <span class="explorer-file-icon" aria-hidden="true"></span>
+                <h2 id="modal-title">C:\Projects\project.md - Explorer</h2>
+                <div class="explorer-window-controls" aria-label="Window controls">
+                    <button type="button" aria-label="Minimize" disabled>_</button>
+                    <button type="button" aria-label="Maximize" disabled>□</button>
+                    <button class="modal-close" type="button" aria-label="Close project details">X</button>
                 </div>
             </div>
+            <nav class="explorer-menu" aria-label="Explorer menu">
+                <span>File</span><span>Edit</span><span>View</span><span>Favorites</span><span>Help</span>
+            </nav>
+            <div class="explorer-addressbar">
+                <label for="explorer-address">Address:</label>
+                <input id="explorer-address" type="text" value="C:\Projects\project.md" readonly>
+                <div class="modal-actions">
+                    <span class="demo-action"><a class="live-button" href="#">Demo</a></span>
+                    <a class="github-button" href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer">GitHub</a>
+                </div>
+            </div>
+            <div class="modal-scroll-content">
+                <div class="modal-main">
+                    <div class="modal-media-layout">
+                        <div class="modal-video video-placeholder" aria-label="YouTube video placeholder"><span>▶</span></div>
+                        <aside class="modal-sidebar" aria-label="Project information">
+                            <div><span>DURATION</span><strong id="modal-duration">-</strong></div>
+                            <hr>
+                            <section class="modal-stack-group">
+                                <h3>TECH STACK</h3>
+                                <div class="tech-tags" id="modal-tech-stack"></div>
+                            </section>
+                            <section class="modal-stack-group">
+                                <h3>TAGS</h3>
+                                <div class="tech-tags" id="modal-tags"></div>
+                            </section>
+                        </aside>
+                    </div>
+                    <div id="modal-content"></div>
+                </div>
+            </div>
+            <div class="explorer-statusbar"><span>1 object(s) selected</span><span>Role: <strong id="modal-role">N/A</strong></span></div>
         </div>
+    </div>
+
+    <div class="notepad-modal" id="notepad-modal" hidden>
+        <section class="notepad-window" role="dialog" aria-modal="true" aria-labelledby="notepad-title">
+            <div class="notepad-titlebar">
+                <span class="notepad-title-icon" aria-hidden="true"></span>
+                <h2 id="notepad-title">Copyright.txt - Notepad</h2>
+                <button class="notepad-close" type="button" aria-label="Close Notepad">X</button>
+            </div>
+            <nav class="notepad-menu" aria-label="Notepad menu">
+                <span>File</span><span>Edit</span><span>Search</span><span>Help</span>
+            </nav>
+            <div class="notepad-content" id="notepad-content"></div>
+        </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>

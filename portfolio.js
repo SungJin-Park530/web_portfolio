@@ -1,57 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const themeToggle = document.querySelector('#theme-toggle');
-  let systemTheme;
-  try {
-    systemTheme = window.matchMedia?.('(prefers-color-scheme: dark)');
-  } catch {
-    systemTheme = null;
-  }
-  const setTheme = (theme) => {
-    const isDark = theme === 'dark';
-    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
-    themeToggle.setAttribute('aria-pressed', String(isDark));
-    const label = `Switch to ${isDark ? 'light' : 'dark'} mode`;
-    themeToggle.setAttribute('aria-label', label);
-    themeToggle.title = label;
-  };
-
-  setTheme(document.documentElement.dataset.theme || 'light');
-  themeToggle.addEventListener('click', () => {
-    const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    try {
-      localStorage.setItem('theme', nextTheme);
-    } catch {
-    }
-  });
-
-  const followSystemTheme = (event) => {
-    try {
-      if (localStorage.getItem('theme')) return;
-    } catch {
-    }
-    setTheme(event.matches ? 'dark' : 'light');
-  };
-  if (systemTheme?.addEventListener) {
-    systemTheme.addEventListener('change', followSystemTheme);
-  } else {
-    systemTheme?.addListener(followSystemTheme);
-  }
-
   const projectList = document.querySelector('#project-list');
-  const filterButtons = [...document.querySelectorAll('.filter-tabs button[data-category]')];
+  const filterButtons = [...document.querySelectorAll('.projects-toolbar button[data-filter]')];
   let projects = [];
-  let activeCategory = 'all';
+  let activeFilter = 'all';
   const modal = document.querySelector('#project-modal');
   const closeButton = modal.querySelector('.modal-close');
+  const modalScrollContent = modal.querySelector('.modal-scroll-content');
   const modalTitle = document.querySelector('#modal-title');
-  const modalCategory = document.querySelector('#modal-category');
+  const modalAddress = document.querySelector('#explorer-address');
+  const modalRole = document.querySelector('#modal-role');
   const modalDuration = document.querySelector('#modal-duration');
   const modalContent = document.querySelector('#modal-content');
   const modalVideo = modal.querySelector('.modal-video');
   const modalTechStack = document.querySelector('#modal-tech-stack');
   const modalTags = document.querySelector('#modal-tags');
   const modalLinks = modal.querySelectorAll('.modal-actions a');
+  const wizardHeading = document.querySelector('#wizard-heading');
+  const wizardDescription = document.querySelector('#wizard-description');
+  const wizardBanner = document.querySelector('.wizard-banner');
+  const notepadModal = document.querySelector('#notepad-modal');
+  const notepadCloseButton = notepadModal.querySelector('.notepad-close');
+  const notepadOpenButton = document.querySelector('#open-notepad');
+  const notepadContent = document.querySelector('#notepad-content');
+  const trayClock = document.querySelector('#tray-clock');
+  let lastOpenedProjectKey = null;
+  let lastModalScrollTop = 0;
+  let notepadContentLoaded = false;
 
   const escapeHtml = (value) => String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -130,7 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const renderProjects = () => {
-    const visibleProjects = activeCategory === 'all'
+    const activeCategory = {
+      team: '팀 프로젝트',
+      personal: '개인 프로젝트'
+    }[activeFilter];
+    const visibleProjects = activeFilter === 'all'
       ? projects
       : projects.filter((project) => categories(project.category).includes(activeCategory));
 
@@ -158,6 +136,76 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   };
 
+  const loadWizardContent = async () => {
+    const path = './content/pages/setup.md';
+    try {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Wizard content request failed: ${response.status}`);
+
+      const content = parseMarkdownFile(await response.text(), path);
+      if (typeof content.title !== 'string' || !content.title.trim()) {
+        throw new Error(`Wizard title not found: ${path}`);
+      }
+      if (!content.body) throw new Error(`Wizard description is empty: ${path}`);
+
+      wizardHeading.textContent = content.title;
+      wizardDescription.innerHTML = window.marked.parse(content.body, { breaks: true });
+
+      if (content.bannerImage !== undefined && typeof content.bannerImage !== 'string') {
+        throw new Error(`Wizard banner image path must be a string: ${path}`);
+      }
+
+      const bannerImagePath = content.bannerImage?.trim();
+      if (bannerImagePath) {
+        const contentUrl = new URL(response.url || path, document.baseURI);
+        const bannerDirectory = new URL('.', contentUrl);
+        const bannerUrl = new URL(bannerImagePath, contentUrl);
+        if (bannerUrl.origin !== bannerDirectory.origin || !bannerUrl.pathname.startsWith(bannerDirectory.pathname)) {
+          throw new Error(`Wizard banner image must be inside ${bannerDirectory.pathname}`);
+        }
+
+        const image = document.createElement('img');
+        image.className = 'wizard-banner-image';
+        image.alt = '';
+        image.addEventListener('error', () => {
+          console.error(`Unable to load wizard banner image: ${bannerUrl.href}`);
+          image.remove();
+          const errorMessage = document.createElement('span');
+          errorMessage.className = 'wizard-banner-error';
+          errorMessage.textContent = '배너 이미지를 불러오지 못했습니다.';
+          wizardBanner.append(errorMessage);
+        }, { once: true });
+        image.src = bannerUrl.href;
+        wizardBanner.replaceChildren(image);
+      }
+    } catch (error) {
+      console.error('Unable to load wizard content:', error);
+      const errorMessage = document.createElement('p');
+      errorMessage.className = 'wizard-load-error';
+      errorMessage.setAttribute('role', 'alert');
+      errorMessage.textContent = '설치 마법사 내용을 불러오지 못했습니다.';
+      wizardDescription.append(errorMessage);
+    }
+  };
+
+  const loadNotepadContent = async () => {
+    const path = './content/pages/copyright.md';
+    try {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Copyright content request failed: ${response.status}`);
+
+      const content = parseMarkdownFile(await response.text(), path);
+      notepadContent.innerHTML = window.marked.parse(content.body);
+      notepadContentLoaded = true;
+    } catch (error) {
+      console.error('Unable to load Notepad content:', error);
+      const errorMessage = document.createElement('p');
+      errorMessage.setAttribute('role', 'alert');
+      errorMessage.textContent = '저작권 문서를 불러오지 못했습니다.';
+      notepadContent.replaceChildren(errorMessage);
+    }
+  };
+
   const renderCard = (project, index) => {
     const highlights = list(project.highlights);
     const techStack = list(project.techStack);
@@ -165,19 +213,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const roleMarkup = showRole ? `<h4>ROLE</h4><p class="project-role">${escapeHtml(project.role)}</p>` : '';
 
     return `
-      <article class="project-card" tabindex="0" role="button" aria-label="Open ${escapeHtml(project.title)} project details" data-project-index="${index}">
-        <div class="project-topline"><div class="category-list">${renderCategories(project.category)}</div><span class="date">${escapeHtml(project.period)}</span></div>
-        <h3>${escapeHtml(project.title)}</h3>
-        <div class="project-body">
-          <div class="video-placeholder dynamic-media-placeholder" aria-label="YouTube video placeholder"><span>→</span></div>
-          <div class="project-info">
-            <h4>SUMMARY</h4>
-            <p>${escapeHtml(project.summary)}</p>
-            ${roleMarkup}
-            <h4>KEY HIGHLIGHTS</h4>
-            <ul>${highlights.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
-            <div class="tech-tags">${techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}</div>
-            <div class="card-actions"><span class="demo-action"><a class="live-button" href="${escapeHtml(project.demoUrl || '#')}">Live Demo ↗</a></span><a class="github-button" href="${escapeHtml(project.githubUrl || '#')}" target="_blank" rel="noreferrer">◈ GitHub</a></div>
+      <article class="project-card project-window" tabindex="0" role="button" aria-label="Open ${escapeHtml(project.title)} project details" data-project-index="${index}">
+        <div class="project-window-titlebar">
+          <span class="project-window-icon" aria-hidden="true"></span>
+          <h3>${escapeHtml(project.title)}</h3>
+          <span class="project-window-controls" aria-hidden="true"><span>_</span><span>□</span><span>X</span></span>
+        </div>
+        <div class="project-window-content">
+          <div class="project-topline"><div class="category-list">${renderCategories(project.category)}</div><span class="date">${escapeHtml(project.period)}</span></div>
+          <div class="project-body">
+            <div class="video-placeholder dynamic-media-placeholder" aria-label="YouTube video placeholder"><span>▶</span></div>
+            <div class="project-info">
+              <h4>SUMMARY</h4>
+              <p>${escapeHtml(project.summary)}</p>
+              ${roleMarkup}
+              <h4>KEY HIGHLIGHTS</h4>
+              <ul>${highlights.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+              <h4>TECH STACK</h4>
+              <div class="tech-tags">${techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}</div>
+              <div class="card-actions">
+                <span class="demo-action"><a class="live-button" href="${escapeHtml(project.demoUrl || '#')}">Demo</a></span>
+                <a class="github-button" href="${escapeHtml(project.githubUrl || '#')}" target="_blank" rel="noreferrer">GitHub</a>
+                <button class="details-button" type="button">상세보기</button>
+              </div>
+            </div>
           </div>
         </div>
       </article>`;
@@ -185,16 +244,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const openModal = (project) => {
     pauseCardVideos();
-    const tags = list(project.tags);
-    const techStack = list(project.techStack);
-    modalTitle.textContent = project.title || 'Project Details';
-    modalCategory.innerHTML = renderCategories(project.category) || '<span class="category">PROJECT</span>';
+    if (!notepadModal.hidden) closeNotepad();
+    const projectKey = String(project.sourcePath || project.title || 'project');
+    const shouldRestoreScroll = projectKey === lastOpenedProjectKey;
+    modalScrollContent.scrollTop = shouldRestoreScroll ? lastModalScrollTop : 0;
+    lastOpenedProjectKey = projectKey;
+    lastModalScrollTop = shouldRestoreScroll ? lastModalScrollTop : 0;
+    const filename = String(project.sourcePath || 'project.md').split(/[\\/]/).pop();
+    const projectPath = `C:\\Projects\\${filename}`;
+    const projectTitle = project.title || filename.replace(/\.md$/i, '');
+    modalTitle.textContent = `C:\\Projects\\${projectTitle}.md - Explorer`;
+    modalAddress.value = projectPath;
+    modalRole.textContent = project.role || 'N/A';
     modalDuration.textContent = project.period || '-';
     const markdownBody = normalizeAssetPath(project.body || '');
     modalContent.innerHTML = window.marked.parse(markdownBody);
     renderMermaidDiagrams().catch((error) => console.error('Unable to render Mermaid diagram:', error));
-    modalTechStack.innerHTML = techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('');
-    modalTags.innerHTML = tags.map((item) => `<span>${escapeHtml(item)}</span>`).join('');
+    modalTechStack.innerHTML = list(project.techStack)
+      .map((item) => `<span>${escapeHtml(item)}</span>`)
+      .join('');
+    modalTags.innerHTML = list(project.tags)
+      .map((item) => `<span>${escapeHtml(item)}</span>`)
+      .join('');
     renderYouTubePlayer(modalVideo, project.videoUrl, `${project.title || 'Project'} video`);
     modalLinks[0].href = project.demoUrl || '#';
     modalLinks[0].dataset.demoUrl = project.demoUrl || '';
@@ -205,11 +276,35 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const closeModal = () => {
+    lastModalScrollTop = modalScrollContent.scrollTop;
     modal.hidden = true;
     modalVideo.replaceChildren();
     modalVideo.classList.remove('has-video');
     document.body.style.overflow = '';
   };
+
+  const openNotepad = () => {
+    if (!modal.hidden) closeModal();
+    notepadModal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    notepadCloseButton.focus();
+    if (!notepadContentLoaded) loadNotepadContent();
+  };
+
+  const closeNotepad = () => {
+    notepadModal.hidden = true;
+    document.body.style.overflow = '';
+  };
+
+  modalScrollContent.addEventListener('scroll', () => {
+    if (!modal.hidden) lastModalScrollTop = modalScrollContent.scrollTop;
+  });
+
+  window.addEventListener('pagehide', () => {
+    if (!modal.hidden) closeModal();
+    lastOpenedProjectKey = null;
+    lastModalScrollTop = 0;
+  });
 
   const renderMermaidDiagrams = async () => {
     const mermaidBlocks = [...modalContent.querySelectorAll('pre code.language-mermaid')];
@@ -229,7 +324,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const bindCardEvents = (projects) => {
     projectList.querySelectorAll('.project-card').forEach((card) => {
       const openCard = () => openModal(projects[Number(card.dataset.projectIndex)]);
+      card.querySelector('.dynamic-media-placeholder').addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
       card.addEventListener('click', (event) => {
+        if (event.target.closest('.dynamic-media-placeholder')) {
+          event.stopPropagation();
+          return;
+        }
         const demoLink = event.target.closest('.live-button');
         if (demoLink) {
           const project = projects[Number(card.dataset.projectIndex)];
@@ -239,10 +341,15 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           return;
         }
+        if (event.target.closest('.details-button')) {
+          event.stopPropagation();
+          openCard();
+          return;
+        }
         if (!event.target.closest('a')) openCard();
       });
       card.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
+        if (event.target === card && (event.key === 'Enter' || event.key === ' ')) {
           event.preventDefault();
           openCard();
         }
@@ -284,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   filterButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      activeCategory = button.dataset.category;
+      activeFilter = button.dataset.filter;
       filterButtons.forEach((filterButton) => {
         const isActive = filterButton === button;
         filterButton.classList.toggle('active', isActive);
@@ -293,7 +400,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (projects.length > 0) renderProjects();
     });
   });
-
   document.querySelectorAll('a[href="#projects"]').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
@@ -302,6 +408,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   closeButton.addEventListener('click', closeModal);
+  notepadOpenButton.addEventListener('click', openNotepad);
+  notepadCloseButton.addEventListener('click', closeNotepad);
+  notepadModal.addEventListener('click', (event) => {
+    if (event.target === notepadModal) closeNotepad();
+  });
+  const updateTrayClock = () => {
+    trayClock.textContent = new Intl.DateTimeFormat('ko-KR', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    }).format(new Date());
+  };
+  updateTrayClock();
+  window.setInterval(updateTrayClock, 1000);
+
   modalLinks[0].addEventListener('click', (event) => {
     if (!String(event.currentTarget.dataset.demoUrl || '').trim()) {
       event.preventDefault();
@@ -312,8 +433,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.target === modal) closeModal();
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !modal.hidden) closeModal();
+    if (event.key !== 'Escape') return;
+    if (!notepadModal.hidden) {
+      closeNotepad();
+    } else if (!modal.hidden) {
+      closeModal();
+    }
   });
 
+  loadWizardContent();
   loadProjects();
 });

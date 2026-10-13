@@ -472,8 +472,323 @@ button.window-control:focus-visible {
   }
 }
 
+body {
+  padding-bottom: 48px;
+}
+
+.taskbar {
+  position: fixed;
+  z-index: 9999;
+  width: auto;
+  margin: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  height: 46px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 4px 6px;
+  color: #111;
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  font-family: "MS Sans Serif", "Malgun Gothic", "Dotum", sans-serif;
+}
+
+.taskbar-start,
+.taskbar-tab {
+  display: inline-flex;
+  height: 34px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 4px 11px;
+  color: #111;
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
+  font: inherit;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.taskbar-start strong {
+  display: inline;
+  font-size: 15px;
+}
+
+.taskbar-start:active,
+.taskbar-tab:active {
+  border-color: #404040 #fff #fff #404040;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+}
+
+.windows-flag {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2px;
+  transform: skewY(-8deg);
+}
+
+.windows-flag i:nth-child(1) { background: #f44336; }
+.windows-flag i:nth-child(2) { background: #4caf50; }
+.windows-flag i:nth-child(3) { background: #2196f3; }
+.windows-flag i:nth-child(4) { background: #ffeb3b; }
+
+.taskbar-tabs {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  gap: 5px;
+}
+
+.taskbar-tab {
+  min-width: 150px;
+  max-width: 230px;
+  justify-content: flex-start;
+  overflow: hidden;
+  box-shadow: inset 1px 1px #fff, inset -1px -1px #808080;
+  text-overflow: ellipsis;
+}
+
+.notepad-icon {
+  position: relative;
+  width: 13px;
+  height: 16px;
+  flex: 0 0 13px;
+  background: #fff;
+  border: 1px solid #404040;
+  box-shadow: inset 1px 1px #dfdfdf;
+}
+
+.notepad-icon::after {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  left: 2px;
+  height: 1px;
+  background: #000080;
+  box-shadow: 0 3px #000080, 0 6px #000080;
+  content: "";
+}
+
+.system-tray {
+  display: flex;
+  height: 34px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 9px;
+  background: #c0c0c0;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  box-shadow: inset 1px 1px #404040, inset -1px -1px #dfdfdf;
+}
+
+.system-tray a {
+  display: grid;
+  width: 20px;
+  height: 24px;
+  place-items: center;
+  color: #111;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.system-tray a:focus-visible,
+.taskbar a:focus-visible,
+.taskbar button:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -4px;
+}
+
+.system-tray time {
+  min-width: 62px;
+  color: #111;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.notepad-modal {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: #0008;
+}
+
+.notepad-modal[hidden] {
+  display: none;
+}
+
+.notepad-window {
+  width: min(460px, calc(100vw - 40px));
+  padding: 4px;
+  color: #111;
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #000;
+  border-bottom: 2px solid #000;
+  box-shadow: 1px 1px 0 #808080, -1px -1px 0 #dfdfdf;
+  font-family: "MS Sans Serif", "Malgun Gothic", "Dotum", sans-serif;
+}
+
+.notepad-titlebar {
+  display: flex;
+  min-height: 27px;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 4px;
+  color: #fff;
+  background: linear-gradient(90deg, #000080, #1084d0);
+}
+
+.notepad-title-icon {
+  position: relative;
+  width: 15px;
+  height: 17px;
+  flex: 0 0 15px;
+  background: #fff;
+  border: 1px solid #c0c0c0;
+}
+
+.notepad-title-icon::after {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  left: 2px;
+  height: 1px;
+  background: #000080;
+  box-shadow: 0 3px #000080, 0 6px #000080;
+  content: "";
+}
+
+.notepad-titlebar h2 {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  margin: 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notepad-close {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  padding: 0;
+  color: #111;
+  background: #c0c0c0;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #404040;
+  border-bottom: 1px solid #404040;
+  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
+  font: bold 12px/1 Arial, sans-serif;
+  cursor: pointer;
+}
+
+.notepad-close:active {
+  border-color: #404040 #fff #fff #404040;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+}
+
+.notepad-menu {
+  display: flex;
+  min-height: 25px;
+  align-items: center;
+  color: #111;
+  font-size: 12px;
+}
+
+.notepad-menu span {
+  padding: 4px 9px;
+}
+
+.notepad-content {
+  min-height: 190px;
+  margin: 0;
+  padding: 13px;
+  overflow: auto;
+  color: #111;
+  background: #fff;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  font: 13px/1.6 "Courier New", Consolas, monospace;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 620px) {
+  body {
+    padding-bottom: 48px;
+  }
+
+  .taskbar {
+    gap: 4px;
+    padding-inline: 4px;
+  }
+
+  .taskbar-start {
+    gap: 5px;
+    padding-inline: 7px;
+  }
+
+  .taskbar-start strong {
+    font-size: 13px;
+  }
+
+  .taskbar-tab {
+    min-width: 0;
+    flex: 1;
+    gap: 4px;
+    padding-inline: 6px;
+    font-size: 11px;
+  }
+
+  .system-tray {
+    gap: 3px;
+    padding-inline: 4px;
+  }
+
+  .system-tray a {
+    width: 17px;
+    font-size: 14px;
+  }
+
+  .system-tray time {
+    min-width: 54px;
+    font-size: 10px;
+  }
+}
+
 .projects-section {
   font-family: "MS Sans Serif", "Malgun Gothic", "Dotum", sans-serif;
+}
+
+#projects {
+  scroll-margin-top: 48px;
 }
 
 .projects-section .section-heading {

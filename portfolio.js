@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeCategory = 'all';
   const modal = document.querySelector('#project-modal');
   const closeButton = modal.querySelector('.modal-close');
+  const modalScrollContent = modal.querySelector('.modal-scroll-content');
   const modalTitle = document.querySelector('#modal-title');
   const modalAddress = document.querySelector('#explorer-address');
   const modalRole = document.querySelector('#modal-role');
@@ -17,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const wizardHeading = document.querySelector('#wizard-heading');
   const wizardDescription = document.querySelector('#wizard-description');
   const wizardBanner = document.querySelector('.wizard-banner');
+  const notepadModal = document.querySelector('#notepad-modal');
+  const notepadCloseButton = notepadModal.querySelector('.notepad-close');
+  const notepadOpenButton = document.querySelector('#open-notepad');
+  const trayClock = document.querySelector('#tray-clock');
+  let lastOpenedProjectKey = null;
+  let lastModalScrollTop = 0;
 
   const escapeHtml = (value) => String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -213,6 +220,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const openModal = (project) => {
     pauseCardVideos();
+    if (!notepadModal.hidden) closeNotepad();
+    const projectKey = String(project.sourcePath || project.title || 'project');
+    const shouldRestoreScroll = projectKey === lastOpenedProjectKey;
+    modalScrollContent.scrollTop = shouldRestoreScroll ? lastModalScrollTop : 0;
+    lastOpenedProjectKey = projectKey;
+    lastModalScrollTop = shouldRestoreScroll ? lastModalScrollTop : 0;
     const filename = String(project.sourcePath || 'project.md').split(/[\\/]/).pop();
     const projectPath = `C:\\Projects\\${filename}`;
     const projectTitle = project.title || filename.replace(/\.md$/i, '');
@@ -239,11 +252,34 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const closeModal = () => {
+    lastModalScrollTop = modalScrollContent.scrollTop;
     modal.hidden = true;
     modalVideo.replaceChildren();
     modalVideo.classList.remove('has-video');
     document.body.style.overflow = '';
   };
+
+  const openNotepad = () => {
+    if (!modal.hidden) closeModal();
+    notepadModal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    notepadCloseButton.focus();
+  };
+
+  const closeNotepad = () => {
+    notepadModal.hidden = true;
+    document.body.style.overflow = '';
+  };
+
+  modalScrollContent.addEventListener('scroll', () => {
+    if (!modal.hidden) lastModalScrollTop = modalScrollContent.scrollTop;
+  });
+
+  window.addEventListener('pagehide', () => {
+    if (!modal.hidden) closeModal();
+    lastOpenedProjectKey = null;
+    lastModalScrollTop = 0;
+  });
 
   const renderMermaidDiagrams = async () => {
     const mermaidBlocks = [...modalContent.querySelectorAll('pre code.language-mermaid')];
@@ -348,6 +384,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   closeButton.addEventListener('click', closeModal);
+  notepadOpenButton.addEventListener('click', openNotepad);
+  notepadCloseButton.addEventListener('click', closeNotepad);
+  notepadModal.addEventListener('click', (event) => {
+    if (event.target === notepadModal) closeNotepad();
+  });
+  const updateTrayClock = () => {
+    trayClock.textContent = new Intl.DateTimeFormat('ko-KR', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    }).format(new Date());
+  };
+  updateTrayClock();
+  window.setInterval(updateTrayClock, 1000);
+
   modalLinks[0].addEventListener('click', (event) => {
     if (!String(event.currentTarget.dataset.demoUrl || '').trim()) {
       event.preventDefault();
@@ -358,7 +409,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.target === modal) closeModal();
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !modal.hidden) closeModal();
+    if (event.key !== 'Escape') return;
+    if (!notepadModal.hidden) {
+      closeNotepad();
+    } else if (!modal.hidden) {
+      closeModal();
+    }
   });
 
   loadWizardContent();

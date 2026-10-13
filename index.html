@@ -61,9 +61,20 @@
         </section>
     </main>
 
-    <footer id="contact">
-        <div><strong>© 2026 박성진. All rights reserved.</strong><small>Reach out at <a href="mailto:alex.chen@example.com">tjdwls530@gmail.com</a></small></div>
-        <div class="footer-links"><a href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer" aria-label="GitHub">◈</a><a href="#contact" aria-label="RSS">◔</a></div>
+    <footer class="taskbar" aria-label="Windows taskbar">
+        <a class="taskbar-start" href="#hero">
+            <span class="windows-flag" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <strong>Start</strong>
+        </a>
+        <nav class="taskbar-tabs" aria-label="Open windows">
+            <a class="taskbar-tab" href="#hero"><span aria-hidden="true">📁</span> Setup Wizard</a>
+            <button class="taskbar-tab" id="open-notepad" type="button"><span class="notepad-icon" aria-hidden="true"></span> Copyright.txt</button>
+        </nav>
+        <div class="system-tray">
+            <a href="mailto:tjdwls530@gmail.com" aria-label="Email tjdwls530@gmail.com" title="이메일 보내기">📧</a>
+            <a href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer" aria-label="GitHub profile" title="GitHub 프로필">🐙</a>
+            <time id="tray-clock" aria-label="현재 시각"></time>
+        </div>
     </footer>
 
     <div class="project-modal" id="project-modal" hidden>
@@ -110,6 +121,24 @@
             </div>
             <div class="explorer-statusbar"><span>1 object(s) selected</span><span>Role: <strong id="modal-role">N/A</strong></span></div>
         </div>
+    </div>
+
+    <div class="notepad-modal" id="notepad-modal" hidden>
+        <section class="notepad-window" role="dialog" aria-modal="true" aria-labelledby="notepad-title">
+            <div class="notepad-titlebar">
+                <span class="notepad-title-icon" aria-hidden="true"></span>
+                <h2 id="notepad-title">Copyright.txt - Notepad</h2>
+                <button class="notepad-close" type="button" aria-label="Close Notepad">X</button>
+            </div>
+            <nav class="notepad-menu" aria-label="Notepad menu">
+                <span>File</span><span>Edit</span><span>Search</span><span>Help</span>
+            </nav>
+            <pre class="notepad-content">© 2026 박성진. All rights reserved.
+
+Author: 박성진 (Alex Park)
+Contact: tjdwls530@gmail.com
+Description: Full-Stack &amp; AI Engineer Portfolio</pre>
+        </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>

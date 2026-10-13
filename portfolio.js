@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const projectList = document.querySelector('#project-list');
-  const filterButtons = [...document.querySelectorAll('.filter-tabs button[data-category]')];
+  const filterButtons = [...document.querySelectorAll('.projects-toolbar button[data-filter]')];
   let projects = [];
-  let activeCategory = 'all';
+  let activeFilter = 'all';
   const modal = document.querySelector('#project-modal');
   const closeButton = modal.querySelector('.modal-close');
   const modalScrollContent = modal.querySelector('.modal-scroll-content');
@@ -104,7 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const renderProjects = () => {
-    const visibleProjects = activeCategory === 'all'
+    const activeCategory = {
+      team: '팀 프로젝트',
+      personal: '개인 프로젝트'
+    }[activeFilter];
+    const visibleProjects = activeFilter === 'all'
       ? projects
       : projects.filter((project) => categories(project.category).includes(activeCategory));
 
@@ -387,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   filterButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      activeCategory = button.dataset.category;
+      activeFilter = button.dataset.filter;
       filterButtons.forEach((filterButton) => {
         const isActive = filterButton === button;
         filterButton.classList.toggle('active', isActive);
@@ -396,7 +400,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (projects.length > 0) renderProjects();
     });
   });
-
   document.querySelectorAll('a[href="#projects"]').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();

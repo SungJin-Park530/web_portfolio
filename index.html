@@ -47,17 +47,30 @@
         </section>
 
         <section id="projects" class="projects-section" aria-labelledby="projects-title">
-            <div class="section-heading">
-                <h2 id="projects-title">C:\Projects Directory</h2>
-                <p>프로젝트를 선택해 자세한 내용을 확인하세요.</p>
+            <div class="explorer-chrome">
+                <div class="projects-titlebar">
+                    <span class="projects-folder-icon" aria-hidden="true">📁</span>
+                    <h2 id="projects-title">C:\Projects - File Explorer</h2>
+                    <div class="projects-window-controls" aria-hidden="true"><span>_</span><span>□</span><span>X</span></div>
+                </div>
+                <nav class="projects-menu" aria-label="File Explorer menu">
+                    <span>파일(F)</span><span>편집(E)</span><span>보기(V)</span><span>도움말(H)</span>
+                </nav>
+                <div class="projects-toolbar" role="group" aria-label="프로젝트 도구 모음">
+                    <button class="toolbar-filter active" type="button" data-filter="all" aria-pressed="true">🗂️ 전체</button>
+                    <button class="toolbar-filter" type="button" data-filter="team" aria-pressed="false">👥 팀 프로젝트</button>
+                    <button class="toolbar-filter" type="button" data-filter="personal" aria-pressed="false">👤 개인 프로젝트</button>
+                    <span class="toolbar-divider" aria-hidden="true"></span>
+                    <a class="toolbar-projects" href="#projects">📁 프로젝트</a>
+                </div>
+                <div class="projects-addressbar">
+                    <label>주소(A):</label>
+                    <div class="projects-address-field"><span>📁 C:\Projects\</span><span aria-hidden="true">▼</span></div>
+                </div>
             </div>
-            <div class="filter-tabs" role="group" aria-label="프로젝트 분류">
-                <button class="active" type="button" data-category="all" aria-pressed="true">전체</button>
-                <button type="button" data-category="팀 프로젝트" aria-pressed="false">팀 프로젝트</button>
-                <button type="button" data-category="개인 프로젝트" aria-pressed="false">개인 프로젝트</button>
+            <div class="explorer-pane">
+                <div class="project-list" id="project-list" aria-live="polite"></div>
             </div>
-
-            <div class="project-list" id="project-list" aria-live="polite"></div>
         </section>
     </main>
 

@@ -316,7 +316,7 @@ button.window-control:focus-visible {
 
 .wizard-content {
   display: grid;
-  grid-template-columns: 170px minmax(0, 1fr);
+  grid-template-columns: 120px minmax(0, 1fr);
   gap: 24px;
   min-height: 270px;
   padding: 14px 16px 18px 10px;
@@ -324,20 +324,21 @@ button.window-control:focus-visible {
 
 .wizard-banner {
   position: relative;
-  height: 245px;
+  width: 120px;
+  height: 240px;
   overflow: hidden;
   background: #000080;
 }
 
 .wizard-banner-image {
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 50%;
   width: auto;
   max-width: none;
-  height: 100%;
+  height: auto;
   max-height: none;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
 }
 
 .wizard-banner-error {
@@ -360,7 +361,7 @@ button.window-control:focus-visible {
 }
 
 .wizard-copy p {
-  margin: 0 0 16px;
+  margin: 0 0 1.55em;
   color: #000;
   font-size: 13px;
   line-height: 1.55;
@@ -450,7 +451,7 @@ button.window-control:focus-visible {
   }
 
   .wizard-banner {
-    height: 220px;
+    height: 240px;
   }
 
   .wizard-copy h2 {

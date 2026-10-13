@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!content.body) throw new Error(`Wizard description is empty: ${path}`);
 
       wizardHeading.textContent = content.title;
-      wizardDescription.innerHTML = window.marked.parse(content.body);
+      wizardDescription.innerHTML = window.marked.parse(content.body, { breaks: true });
 
       if (content.bannerImage !== undefined && typeof content.bannerImage !== 'string') {
         throw new Error(`Wizard banner image path must be a string: ${path}`);

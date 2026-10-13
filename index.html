@@ -23,27 +23,37 @@
 
 <body>
     <header class="site-header">
-        <a class="brand" href="#hero">박성진 <span>· AI &amp; 풀스택 개발자</span></a>
-        <nav class="top-nav" aria-label="Main navigation">
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
-            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="true" title="Switch to light mode">
-                <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
-                <span class="theme-icon theme-icon-moon" aria-hidden="true">☾</span>
-            </button>
-        </nav>
+        <a class="brand" href="#hero">
+            <span class="window-icon" aria-hidden="true"><span></span></span>
+            박성진 <span class="brand-role">· FULL-STACK &amp; AI</span>
+        </a>
+        <div class="window-controls" role="group" aria-label="Window controls">
+            <span class="window-control" aria-hidden="true">_</span>
+            <button class="window-control" id="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="true" title="Switch to light mode">□</button>
+            <span class="window-control window-close" aria-hidden="true">X</span>
+        </div>
     </header>
 
     <main>
-        <section id="hero" class="hero" aria-labelledby="hero-title">
-            <div class="availability"><span></span> 새로운 기회를 찾고 있습니다</div>
-            <h1 id="hero-title">설명 가능한 시스템과<br>효율적인 AI 서비스를 만듭니다</h1>
-            <p class="role">풀스택 &amp; AI 개발자</p>
-            <p class="intro">탄탄한 기반 위에 LLM 및 AI를 연결해 효율적인 시스템을 만듭니다.<br class="desktop-only">확장성 높고 신뢰 가능한 구조를 설계해<br class="desktop-only">높은 고도화 가능성을 추구합니다.</p>
-            <div class="hero-actions">
-                <a class="text-button" href="#projects">프로젝트 둘러보기 <span>↓</span></a>
-                <a class="github-button" href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer">◈ GitHub</a>
+        <section id="hero" class="hero" aria-labelledby="wizard-heading">
+            <div class="setup-wizard">
+                <div class="wizard-titlebar">
+                    <span>Portfolio Setup Wizard</span>
+                </div>
+                <div class="wizard-content">
+                    <div class="wizard-banner" aria-hidden="true"></div>
+                    <div class="wizard-copy">
+                        <h2 id="wizard-heading">포트폴리오 설치 프로그램입니다.</h2>
+                        <p>포트폴리오를 방문해 주셔서 감사합니다. 웹 플랫폼과 AI 솔루션을 구축하는 풀스택 &amp; AI 엔지니어의 작업물을 확인하실 수 있습니다.</p>
+                        <p>살펴보기를 시작하려면 [다음]을 누르십시오.</p>
+                    </div>
+                </div>
+                <div class="wizard-divider" aria-hidden="true"></div>
+                <div class="wizard-actions">
+                    <button class="wizard-button" type="button" disabled>&lt; 뒤로(B)</button>
+                    <a class="wizard-button wizard-next" href="#projects">다음(N) &gt;</a>
+                    <a class="wizard-button" href="https://github.com/SungJin-Park530" target="_blank" rel="noreferrer">GitHub...</a>
+                </div>
             </div>
         </section>
 

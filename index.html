@@ -75,10 +75,10 @@
     </main>
 
     <footer class="taskbar" aria-label="Windows taskbar">
-        <a class="taskbar-start" href="#hero">
+        <button class="taskbar-start" id="start-menu-toggle" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="start-menu">
             <span class="windows-flag" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
             <strong>시작</strong>
-        </a>
+        </button>
         <nav class="taskbar-tabs" aria-label="Open windows">
             <a class="taskbar-tab" href="#hero"><span aria-hidden="true">📁</span> Setup Wizard</a>
             <a class="taskbar-tab" href="#projects"><span aria-hidden="true">📁</span> Projects</a>
@@ -89,6 +89,17 @@
             <time id="tray-clock" aria-label="현재 시각"></time>
         </div>
     </footer>
+
+    <div class="start-menu" id="start-menu" role="menu" aria-label="Windows 98 시작 메뉴" hidden>
+        <div class="start-menu-sidebar"><span>Portfolio 98</span></div>
+        <div class="start-menu-list">
+            <button class="start-menu-item" type="button" role="menuitem"><span class="start-menu-icon" aria-hidden="true">💣</span><span>지뢰찾기(M)</span></button>
+            <button class="start-menu-item" type="button" role="menuitem"><span class="start-menu-icon" aria-hidden="true">⚙️</span><span>설정(S)</span></button>
+            <button class="start-menu-item" type="button" role="menuitem"><span class="start-menu-icon" aria-hidden="true">❓</span><span>도움말(H)</span></button>
+            <div class="start-menu-divider" role="separator"></div>
+            <button class="start-menu-item" type="button" role="menuitem"><span class="start-menu-icon" aria-hidden="true">💻</span><span>컴퓨터 끄기(U)...</span></button>
+        </div>
+    </div>
 
     <div class="project-modal" id="project-modal" hidden>
         <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">

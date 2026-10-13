@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const notepadOpenButton = document.querySelector('#open-notepad');
   const notepadContent = document.querySelector('#notepad-content');
   const trayClock = document.querySelector('#tray-clock');
+  const startMenu = document.querySelector('#start-menu');
+  const startMenuToggle = document.querySelector('#start-menu-toggle');
   let lastOpenedProjectKey = null;
   let lastModalScrollTop = 0;
   let notepadContentLoaded = false;
@@ -412,6 +414,19 @@ document.addEventListener('DOMContentLoaded', () => {
   notepadCloseButton.addEventListener('click', closeNotepad);
   notepadModal.addEventListener('click', (event) => {
     if (event.target === notepadModal) closeNotepad();
+  });
+  const setStartMenuOpen = (isOpen) => {
+    startMenu.hidden = !isOpen;
+    startMenuToggle.classList.toggle('active', isOpen);
+    startMenuToggle.setAttribute('aria-expanded', String(isOpen));
+  };
+  startMenuToggle.addEventListener('click', () => {
+    setStartMenuOpen(startMenu.hidden);
+  });
+  document.addEventListener('click', (event) => {
+    if (startMenu.hidden) return;
+    if (startMenu.contains(event.target) || startMenuToggle.contains(event.target)) return;
+    setStartMenuOpen(false);
   });
   const updateTrayClock = () => {
     trayClock.textContent = new Intl.DateTimeFormat('ko-KR', {

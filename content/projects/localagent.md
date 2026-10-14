@@ -6,7 +6,7 @@ period: "2026.09.02 - 2026.12.31"
 videoUrl: "https://youtu.be/GbuYkXCgUXU"
 demoUrl: ""
 githubUrl: "https://github.com/SungJin-Park530/LocalAgent"
-summary: "개인 PC에서 구동되는 로컬 sLLM AI 에이전트. 로컬 디렉토리와 히스토리를 직접 제어하며, 보안과 개인화에 중점을 두고 활용하는 에이전트입니다."
+summary: "LangGraph 기반으로 개인 PC에서 구동되는 로컬 sLLM AI 에이전트. 로컬 디렉토리와 히스토리를 직접 제어하며, 보안과 개인화에 중점을 두고 활용하는 에이전트입니다."
 highlights:
   - "PC를 직접 탐색하고 제어하는 보조 AI 에이전트"
   - "로컬 구동을 통해 높은 수준의 개인화와 보안 성능 추구"

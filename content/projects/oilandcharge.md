@@ -6,7 +6,7 @@ period: "2026.08.14 ~ 2026.08.19"
 videoUrl: "https://www.youtube.com/watch?v=MbcDpnc_Ljg"
 demoUrl: "https://port-0-oilandcharge-mstwa15r85de9006.sel3.cloudtype.app/"
 githubUrl: "https://github.com/SungJin-Park530/OilAndCharge"
-summary: "사용자 위치와 등록 차량의 연비를 기반으로 주변 주유소의 유가와 왕복 이동비를 함께 계산하는 웹 서비스"
+summary: "Flask 기반 사용자 위치와 등록 차량의 연비를 기반으로 주변 주유소의 유가와 왕복 이동비를 함께 계산하는 웹 서비스"
 highlights:
   - "OPINET 및 Kakao Mobility API 연동을 통한 실시간 주유소 검색 및 왕복 이동비 합산 계산"
   - "pyproj를 활용한 WGS84와 KATEC/TM128 간 실시간 양방향 좌표계 변환 파이프라인 구축"

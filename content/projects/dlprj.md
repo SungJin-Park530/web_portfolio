@@ -6,7 +6,7 @@ period: "2026.08.27 - 2026.09.08"
 videoUrl: "https://www.youtube.com/watch?v=jH32ye8Zr_Q"
 demoUrl: "https://sign-captcha.streamlit.app/"
 githubUrl: "https://github.com/SungJin-Park530/DLPRJ"
-summary: "다양한 도로 상황 중 표지판을 인식해 사용자의 주행을 보조하는 MVP 서비스"
+summary: "Streamlit 기반 다양한 도로 상황 중 표지판을 인식해 사용자의 주행을 보조하는 MVP 서비스"
 highlights:
   - "YOLOv8 모델을 활용한 표지판 객체 탐색 및 판별"
   - "탐지 결과를 기반으로 운전자에게 필요한 안전 안내 제공"

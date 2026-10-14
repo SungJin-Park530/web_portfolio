@@ -26,8 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const startMenu = document.querySelector('#start-menu');
   const startMenuToggle = document.querySelector('#start-menu-toggle');
   const minesweeperMenuItem = startMenu.querySelector('[data-action="open-minesweeper"]');
-  let lastOpenedProjectKey = null;
-  let lastModalScrollTop = 0;
   let notepadContentLoaded = false;
 
   const escapeHtml = (value) => String(value ?? '')
@@ -235,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <h4>TECH STACK</h4>
               <div class="tech-tags">${techStack.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}</div>
               <div class="card-actions">
-                <span class="demo-action"><a class="live-button" href="${escapeHtml(project.demoUrl || '#')}">Demo</a></span>
+                <span class="demo-action"><a class="live-button" href="${escapeHtml(project.demoUrl || '#')}">실행 해보기</a></span>
                 <a class="github-button" href="${escapeHtml(project.githubUrl || '#')}" target="_blank" rel="noreferrer">GitHub</a>
                 <button class="details-button" type="button">상세보기</button>
               </div>
@@ -248,11 +246,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const openModal = (project) => {
     pauseCardVideos();
     if (!notepadModal.hidden) closeNotepad();
-    const projectKey = String(project.sourcePath || project.title || 'project');
-    const shouldRestoreScroll = projectKey === lastOpenedProjectKey;
-    modalScrollContent.scrollTop = shouldRestoreScroll ? lastModalScrollTop : 0;
-    lastOpenedProjectKey = projectKey;
-    lastModalScrollTop = shouldRestoreScroll ? lastModalScrollTop : 0;
     const filename = String(project.sourcePath || 'project.md').split(/[\\/]/).pop();
     const projectPath = `C:\\Projects\\${filename}`;
     const projectTitle = project.title || filename.replace(/\.md$/i, '');
@@ -274,12 +267,12 @@ document.addEventListener('DOMContentLoaded', () => {
     modalLinks[0].dataset.demoUrl = project.demoUrl || '';
     modalLinks[1].href = project.githubUrl || 'https://github.com';
     modal.hidden = false;
+    modalScrollContent.scrollTop = 0;
     document.body.style.overflow = 'hidden';
     closeButton.focus();
   };
 
   const closeModal = () => {
-    lastModalScrollTop = modalScrollContent.scrollTop;
     modal.hidden = true;
     modalVideo.replaceChildren();
     modalVideo.classList.remove('has-video');
@@ -299,14 +292,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = '';
   };
 
-  modalScrollContent.addEventListener('scroll', () => {
-    if (!modal.hidden) lastModalScrollTop = modalScrollContent.scrollTop;
-  });
-
   window.addEventListener('pagehide', () => {
     if (!modal.hidden) closeModal();
-    lastOpenedProjectKey = null;
-    lastModalScrollTop = 0;
   });
 
   const renderMermaidDiagrams = async () => {

@@ -3,6 +3,10 @@ name: Deploy static content to Pages
 on:
   push:
     branches: ["main"] # 만약 기본 브랜치명이 master라면 "master"로 수정
+    paths-ignore:
+      - '.github/**'
+      - 'README.md'
+      - 'content/readme_asset/**'
 
 permissions:
   contents: read

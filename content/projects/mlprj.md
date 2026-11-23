@@ -46,21 +46,14 @@ Streamlit 배포 정책상 12시간 동안 트래픽이 발생하지 않으면 �
 
 | 모델 학습 및 성능 최적화 보고서 |
 | :---: |
-| [![](docs/images/ml-report.png)](https://drive.google.com/file/d/1yPk7ZXgzExdGwNyQSe_84FRcHoraJCpV/view?usp=sharing)|
+| [![](../../assets/images/mlprj/ml-report.png)](https://drive.google.com/file/d/1yPk7ZXgzExdGwNyQSe_84FRcHoraJCpV/view?usp=sharing)|
 | [보고서.PDF](https://drive.google.com/file/d/1yPk7ZXgzExdGwNyQSe_84FRcHoraJCpV/view?usp=sharing) |
 
-## 시연 영상 및 서비스 화면
-
-### 시연 영상
-
-[![IoT Occupancy Prediction 시연 영상](docs/images/dl-thumbnail.png)](https://youtu.be/MS3Gb3q3yms)
-
-
-### 서비스 화면
+## 서비스 화면
 
 | 재실 여부 예측 | 예측 평가 |
 | :---: | :---: |
-| ![](docs/images/dl-main.png) | ![](docs/images/dl-result.png) |
+| ![](../../assets/images/mlprj/ml-main.png) | ![](../../assets/images/mlprj/ml-result.png) |
 
 ## 주요 기능
 
@@ -112,12 +105,6 @@ Streamlit 배포 정책상 12시간 동안 트래픽이 발생하지 않으면 �
 | Calibrated SVM | 0.9832 | 1.0 | 0.9165 | 0.9541 | 0.9701 |
 | K-Nearest Neighbors | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
 
-### 평가 산출물
-
-| 예측 결과 | ROC |
-| --- | --- |
-| (혼동 행렬 이미지) | (ROC 커브) |
-
 ## 시스템 파이프라인 및 상호작용 흐름
 
 ### 시스템 아키텍처
@@ -155,14 +142,7 @@ sequenceDiagram
     App-->>User: 혼동 행렬, ROC Curve/AUC 표시
 ```
 
-## 연구 보고서 및 실험 문서
-
-| 모델 학습과 성능 개선 |
-| --- |
-| (이미지) |
-| [모델 학습 보고서](https://drive.google.com/file/d/1yPk7ZXgzExdGwNyQSe_84FRcHoraJCpV/view?usp=sharing) |
-
-### 모델 학습 파라미터
+## 모델 학습 파라미터
 ```powershell
 하이퍼파라미터: {
     'max_depth': None,

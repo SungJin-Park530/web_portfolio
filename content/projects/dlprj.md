@@ -42,14 +42,14 @@ Streamlit 배포 정책상 12시간 동안 트래픽이 발생하지 않으면 �
 
 | 모델 학습과 성능 개선 | VUI 연결과 프롬프트 엔지니어링 |
 | --- | --- |
-| ![딥러닝 모델 학습 보고서](docs/images/ppt1.png) | ![VUI 및 프롬프팅 보고서](docs/images/ppt2.png) |
+| ![딥러닝 모델 학습 보고서](../../assets/images/dlprj/ppt1.png) | ![VUI 및 프롬프팅 보고서](../../assets/images/dlprj/ppt2.png) |
 | [모델 학습 보고서](https://drive.google.com/file/d/1MSKBBslu3yHva1ifJ_1mnqzxKrfizkxc/view?usp=sharing) | [VUI 및 프롬프팅 보고서](https://drive.google.com/file/d/1TiLdma-SNRPBGLOobVZK2Bydbn_kfdQ_/view?usp=sharing) |
 
 ## 서비스 화면
 
 | 표지판 객체 탐지 | 학습 결과 성능 비교 |
 | :---: | :---: |
-| ![표지판 객체 탐지](docs/images/image1.png) | ![학습 결과 성능 비교](docs/images/image2.png) |
+| ![표지판 객체 탐지](../../assets/images/dlprj/image1.png) | ![학습 결과 성능 비교](../../assets/images/dlprj/image2.png) |
 
 ## 주요 기능
 

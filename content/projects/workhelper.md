@@ -40,7 +40,7 @@ tags: ["featured", "LLM", "Advenced RAG", "legal"]
 ## 프로젝트 보고서
 | 보고서 | 별첨 |
 | :---: | :---: |
-| [![](assets/images/workhelper/report.png)](https://drive.google.com/file/d/1z77QWlTrn-q8-e5Nt0XfNtqUGK486Avh/view?usp=sharing) | [![](assets/images/workhelper/etc.png)](https://drive.google.com/file/d/1F5LqKwR31_nzdSNEVt11HtvXAsZL0L_8/view?usp=sharing) |
+| [![](../../assets/images/workhelper/report.png)](https://drive.google.com/file/d/1z77QWlTrn-q8-e5Nt0XfNtqUGK486Avh/view?usp=sharing) | [![](../../assets/images/workhelper/etc.png)](https://drive.google.com/file/d/1F5LqKwR31_nzdSNEVt11HtvXAsZL0L_8/view?usp=sharing) |
 
 ## 팀 구성 및 역할 분담
 
@@ -57,11 +57,11 @@ tags: ["featured", "LLM", "Advenced RAG", "legal"]
 
 | 메인화면 | 로그인 화면 | 사건 관리 화면 |
 | :---: | :---: | :---: |
-| ![](assets/images/workhelper/main.png) | ![](assets/images/workhelper/login.png) | ![](assets/images/workhelper/mycase.png) |
+| ![](../../assets/images/workhelper/main.png) | ![](../../assets/images/workhelper/login.png) | ![](../../assets/images/workhelper/mycase.png) |
 
 | AI 채팅 상담 화면 | 증거 서류 분석 화면 | 진정서 작성 초안 화면 |
 | :---: | :---: | :---: |
-| ![](assets/images/workhelper/aichat.png) | ![](assets/images/workhelper/ocr.png) | ![](assets/images/workhelper/petition.png) |
+| ![](../../assets/images/workhelper/aichat.png) | ![](../../assets/images/workhelper/ocr.png) | ![](../../assets/images/workhelper/petition.png) |
 
 ## 주요 기능
 

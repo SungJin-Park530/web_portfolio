@@ -50,7 +50,7 @@ Cloudtype 배포 정책상 매일 자정에 서버가 휴면 상태에 돌입할
 
 | 메인 화면 | 차량 등록 화면 | 조회 결과 화면 |
 | --- | --- | --- |
-| ![메인 화면](assets/images/oilandcharge/main.png) | ![차량 등록 화면](assets/images/oilandcharge/car.png) | ![조회 결과 화면](assets/images/oilandcharge/result.png) |
+| ![메인 화면](../../assets/images/oilandcharge/main.png) | ![차량 등록 화면](../../assets/images/oilandcharge/car.png) | ![조회 결과 화면](../../assets/images/oilandcharge/result.png) |
 
 ## 주요 기능
 

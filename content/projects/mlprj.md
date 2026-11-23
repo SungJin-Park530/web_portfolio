@@ -6,7 +6,7 @@ period: "2026.08.20 - 2026.08.26"
 videoUrl: "https://www.youtube.com/watch?v=MS3Gb3q3yms"
 demoUrl: "https://iotmodel.streamlit.app/"
 githubUrl: "https://github.com/SungJin-Park530/MLPRJ"
-summary: "IoT 환경 센서 데이터 기반 실시간 재실 여부 분류 및 Streamlit 인터랙티브 머신러닝 대시보드"
+summary: "Streamlit 기반 IoT 환경 센서 데이터 기반 실시간 재실 여부 분류 대시보드"
 highlights:
   - "다중 환경 센서(온도·조도·CO2·소음·PIR) 데이터를 이진 재실 분류 문제로 모델링"
   - "6종 분류 모델 비교 및 GridSearchCV 튜닝을 통해 최적의 Random Forest 모델 선정 (F1-Score 0.999)"

@@ -3,7 +3,7 @@ title: "리리빵집 "
 category: ["웹 앱 서비스", "개인 프로젝트"]
 role: ""
 period: "2026.11.18 - 2026.11.23"
-videoUrl: ""
+videoUrl: "https://youtube.com/shorts/3BZA15qpBAw"
 demoUrl: "http://liribbangzip.kro.kr/"
 githubUrl: "https://github.com/SungJin-Park530/bakery-stock"
 summary: "빵집의 당일 상품과 재고를 손님에게 실시간으로 안내합니다."
@@ -51,8 +51,9 @@ tags: ["재고 조회", "베이커리"]
 | localhost:5173/#/admin | 관리자 전용 페이지입니다. |
 
 ## 시연 화면
-- 고객 화면 캡처: [이미지 경로 또는 링크 작성 필요]
-- 관리자 화면 캡처: [이미지 경로 또는 링크 작성 필요]
+| 손님 화면 | 관리자 화면|
+| :---: | :---: |
+| ![](../../assets/images/bakerystock/customerpage.png) | ![](../../assets/images/bakerystock//adminpage.png) |
 
 ## 주요 기능
 ### 고객 기능

@@ -1,3 +1,4 @@
+// 이스터에그 지뢰찾기
 (() => {
   const SIZE = 9;
   const MINE_COUNT = 10;

@@ -50,10 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const url = new URL(value);
       const host = url.hostname.replace(/^www\./, '');
-      if (host === 'youtu.be') return url.pathname.slice(1).split('/')[0];
-      if (!['youtube.com', 'm.youtube.com', 'youtube-nocookie.com'].includes(host)) return '';
-      if (url.pathname === '/watch') return url.searchParams.get('v') || '';
-      return url.pathname.match(/^\/(?:embed|shorts|live)\/([^/]+)/)?.[1] || '';
+      let videoId = '';
+      if (host === 'youtu.be') {
+        videoId = url.pathname.slice(1).split('/')[0];
+      } else if (['youtube.com', 'm.youtube.com', 'youtube-nocookie.com'].includes(host)) {
+        videoId = url.pathname === '/watch'
+          ? url.searchParams.get('v') || ''
+          : url.pathname.match(/^\/(?:embed|shorts|live)\/([^/]+)/)?.[1] || '';
+      }
+      return /^[\w-]{11}$/.test(videoId) ? videoId : '';
     } catch {
       return '';
     }
@@ -61,11 +66,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const renderYouTubePlayer = (container, videoUrl, title) => {
     const videoId = getYouTubeVideoId(videoUrl);
-    if (!/^[\w-]{11}$/.test(videoId)) {
+    if (!videoId) {
       container.classList.remove('has-video');
       container.innerHTML = '<span>→</span>';
       return;
     }
+
+    const thumbnail = document.createElement('img');
+    thumbnail.className = 'youtube-thumbnail';
+    thumbnail.alt = '';
+    thumbnail.onerror = () => {
+      thumbnail.onerror = null;
+      thumbnail.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+    };
+    thumbnail.src = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
 
     const frame = document.createElement('iframe');
     const origin = encodeURIComponent(window.location.origin);
@@ -77,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     frame.loading = 'lazy';
     frame.referrerPolicy = 'strict-origin-when-cross-origin';
     container.classList.add('has-video');
-    container.replaceChildren(frame);
+    container.replaceChildren(thumbnail, frame);
   };
 
   const pauseCardVideos = () => {
